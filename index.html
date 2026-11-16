@@ -358,6 +358,28 @@ footer .btn-ivory:hover{transform:translateY(3px);box-shadow:0 3px 0 var(--navy)
 .toast{visibility:hidden}.toast.on{transform:translate(-50%,0);visibility:visible}
 .toast a{color:var(--denim);font-weight:600}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* MOBILE ALIGNMENT PASS */
+@media(max-width:600px){
+section{padding:72px 0}
+.head{margin-bottom:34px}
+.hero{padding:36px 0 28px}
+.kicker{align-items:flex-start}.kicker .dot{margin-top:5px;flex:none}
+.stack{height:380px;width:100%;max-width:290px;margin:26px auto 10px}
+.frame{width:62%}
+.f1{left:0;top:46px}.f2{left:20%;top:0}.f3{right:0;top:86px}
+.stamp{width:100px;height:100px;left:50%;right:auto;margin-left:-50px;bottom:-34px}
+.marquee{margin-top:30px}
+.roles{margin-top:44px;gap:12px}
+.role{padding:22px 20px 24px}
+.role .ico{margin-bottom:14px;width:42px;height:42px;font-size:17px}
+.role h3{margin:6px 0 10px}
+footer{text-align:center;padding:64px 0 30px}
+footer .pre{margin-left:auto;margin-right:auto}
+footer .big{margin-top:44px!important}
+footer .row{flex-direction:column;align-items:center;gap:22px;margin-top:34px}
+footer .fl{justify-content:center;gap:18px}
+}
 </style>
 </head>
 <body>
@@ -378,7 +400,7 @@ footer .btn-ivory:hover{transform:translateY(3px);box-shadow:0 3px 0 var(--navy)
     <li><a href="#faq"><small>07</small><em class="s">FAQ</em></a></li>
   </ol>
   <div class="foot mono">
-    <a href="https://instagram.com/unshot.visuals">Instagram ↗</a>
+    <a href="https://www.instagram.com/unshot.vs/">Instagram ↗</a>
     <span>Only 4 new brands a month</span>
   </div>
 </div>
@@ -428,7 +450,6 @@ footer .btn-ivory:hover{transform:translateY(3px);box-shadow:0 3px 0 var(--navy)
       <div class="role"><div class="ico" style="background:var(--choc)">03</div><span class="mono">The set</span><h3>We build the world</h3><p>A Paris street at 7am. A bowling lane that ends in the sea. A hotel bed made of strawberry milk. Name it. We'll build it.</p></div>
       <div class="role"><div class="ico" style="background:var(--denim)">04</div><span class="mono">The edit room</span><h3>We finish it</h3><p>No folder of raw files and a "good luck". You get edits, stories, ads and motion, ready to post before your coffee gets cold.</p></div>
     </div>
-    <div class="worlds"><span class="mono" style="margin-right:8px">Recently built →</span><span class="w">A bowling lane into the sea</span><span class="w">Room service, strawberry milk</span><span class="w">Lost luggage at the airport</span><span class="w">Euro street, running errands</span><span class="w">Rings on ice</span><span class="w">The fashion office</span></div>
   </div>
 </section>
 
@@ -676,7 +697,7 @@ footer .btn-ivory:hover{transform:translateY(3px);box-shadow:0 3px 0 var(--navy)
     <div class="row">
       <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="UNSHOT VISUALS logo" viewBox="0 0 1080.0 1080.0"><defs><path id="g2A" d="M285 0L10 0L439-640L717-640L1150 0L875 0L812-97L347-97L285 0ZM444-247L715-247L579-457L444-247Z"/><path id="g2H" d="M960-419L960-640L1210-640L1210 0L960 0L960-229L320-229L320 0L70 0L70-640L320-640L320-419L960-419Z"/><path id="g2I" d="M85 0L85-640L335-640L335 0L85 0Z"/><path id="g2L" d="M70-640L320-640L320-190L903-190L903 0L70 0L70-640Z"/><path id="g2N" d="M320-640L980-251L980-640L1230-640L1230 0L980 0L320-382L320 0L70 0L70-640L320-640Z"/><path id="g2O" d="M665 20L665 20Q447 20 314-19Q181-57 121-133Q60-208 60-320L60-320Q60-432 121-508Q181-583 314-622Q447-660 665-660L665-660Q883-660 1016-622Q1149-583 1210-508Q1270-432 1270-320L1270-320Q1270-208 1210-133Q1149-57 1016-19Q883 20 665 20ZM665-170L665-170Q768-170 843-183Q918-195 959-228Q1000-260 1000-320L1000-320Q1000-380 959-413Q918-445 843-458Q768-470 665-470L665-470Q562-470 485-458Q407-445 364-413Q320-380 320-320L320-320Q320-260 364-228Q407-195 485-183Q562-170 665-170Z"/><path id="g2S" d="M35-235L35-235L308-235Q315-214 349-200Q383-185 441-178Q498-170 574-170L574-170Q649-170 693-175Q736-179 754-191Q772-202 772-222L772-222Q772-241 743-252Q714-262 640-266Q566-270 432-270L432-270Q332-270 260-280Q187-289 141-310Q94-330 72-362Q50-393 50-437L50-437Q50-513 102-563Q153-612 258-637Q362-661 519-661L519-661Q749-661 871-595Q992-528 992-403L992-403L733-403Q728-436 671-454Q614-471 509-471L509-471Q405-471 355-459Q304-447 304-418L304-418Q304-403 318-394Q332-385 367-380Q401-374 464-372Q527-370 624-370L624-370Q731-370 806-360Q881-349 928-328Q974-307 995-275Q1016-242 1016-198L1016-198Q1016-122 968-74Q920-26 816-3Q712 20 544 20L544 20Q449 20 370 9Q290-2 228-24Q166-45 123-77Q80-108 58-148Q35-187 35-235Z"/><path id="g2T" d="M30-450L30-640L1070-640L1070-450L675-450L675 0L425 0L425-450L30-450Z"/><path id="g2U" d="M969-365L969-365L969-640L1219-640L1219-320Q1219-235 1188-176Q1156-116 1100-78Q1044-39 971-18Q898 3 815 12Q731 20 645 20L645 20Q554 20 469 12Q384 3 312-18Q239-39 185-78Q131-116 101-176Q70-235 70-320L70-320L70-640L320-640L320-365Q320-285 359-243Q398-201 471-186Q543-170 645-170L645-170Q744-170 817-186Q890-201 930-243Q969-285 969-365Z"/><path id="g2V" d="M756 0L408 0L20-640L302-640L582-120L862-640L1140-640L756 0Z"/></defs><g transform="scale(9.81818)"><circle cx="55" cy="55" r="54" fill="#F2EEE7"/><circle cx="55" cy="55" r="51" fill="none" stroke="#B20E19" stroke-width="0.7"/><use href="#g2U" fill="#B20E19" transform="translate(55 55) rotate(-59.75) translate(-7.41 -38.00) scale(0.01150)"/><use href="#g2N" fill="#B20E19" transform="translate(55 55) rotate(-34.44) translate(-7.47 -38.00) scale(0.01150)"/><use href="#g2S" fill="#B20E19" transform="translate(55 55) rotate(-11.15) translate(-6.07 -38.00) scale(0.01150)"/><use href="#g2H" fill="#B20E19" transform="translate(55 55) rotate(11.97) translate(-7.36 -38.00) scale(0.01150)"/><use href="#g2O" fill="#B20E19" transform="translate(55 55) rotate(37.46) translate(-7.65 -38.00) scale(0.01150)"/><use href="#g2T" fill="#B20E19" transform="translate(55 55) rotate(61.39) translate(-6.33 -38.00) scale(0.01150)"/><use href="#g2V" fill="#B20E19" transform="translate(55 55) rotate(50.23) translate(-6.67 45.36) scale(0.01150)"/><use href="#g2I" fill="#B20E19" transform="translate(55 55) rotate(36.35) translate(-2.42 45.36) scale(0.01150)"/><use href="#g2S" fill="#B20E19" transform="translate(55 55) rotate(23.23) translate(-6.07 45.36) scale(0.01150)"/><use href="#g2U" fill="#B20E19" transform="translate(55 55) rotate(3.80) translate(-7.41 45.36) scale(0.01150)"/><use href="#g2A" fill="#B20E19" transform="translate(55 55) rotate(-16.39) translate(-6.67 45.36) scale(0.01150)"/><use href="#g2L" fill="#B20E19" transform="translate(55 55) rotate(-34.06) translate(-5.42 45.36) scale(0.01150)"/><use href="#g2S" fill="#B20E19" transform="translate(55 55) rotate(-50.98) translate(-6.07 45.36) scale(0.01150)"/><circle cx="13" cy="55" r="1.6" fill="#B20E19"/><circle cx="97" cy="55" r="1.6" fill="#B20E19"/><circle cx="55" cy="55" r="26" fill="#B20E19"/><circle cx="55" cy="55" r="19.5" fill="#A9BFD8"/><circle cx="55" cy="55" r="9.5" fill="#0C324A"/><path transform="translate(60.51 49.49) scale(0.470)" d="M0,-10 C1,-2 2,-1 10,0 C2,1 1,2 0,10 C-1,2 -2,1 -10,0 C-2,-1 -1,-2 0,-10Z" fill="#F2EEE7"/></g></svg></div>
       <div class="fl mono">
-        <a href="https://instagram.com/unshot.visuals">Instagram · @unshot.visuals</a>
+        <a href="https://www.instagram.com/unshot.vs/">Instagram · @unshot.visuals</a>
         <a href="#packages">Packages</a>
         <a href="#cast">Cast</a>
         <a href="#shop">Shop</a>

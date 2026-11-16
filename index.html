@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UNSHOT | AI Campaigns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#F2EEE7; --denim:#A9BFD8; --cherry:#B20E19; --navy:#0C324A; --choc:#683629;
+  --ivory-2:#E8E2D7; --line:rgba(12,50,74,.16);
+  --syne:'Syne',system-ui,sans-serif; --serif:'Instrument Serif',Georgia,serif;
+  --mono:'Space Mono',ui-monospace,monospace; --sans:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ivory);color:var(--navy);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.locked{overflow:hidden}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+em.s{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:60;background:rgba(242,238,231,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;height:72px}
+.nav-right{display:flex;align-items:center;gap:22px}
+.burger{justify-self:start;display:flex;align-items:center;gap:14px;background:none;border:0;cursor:pointer;color:var(--navy);padding:8px 0}
+.burger .bars{width:30px;height:18px;position:relative}
+.burger .bars i{position:absolute;right:0;height:2.5px;background:currentColor;border-radius:2px;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .2s,width .3s}
+.burger .bars i:nth-child(1){top:0;width:100%}
+.burger .bars i:nth-child(2){top:8px;width:70%}
+.burger .bars i:nth-child(3){top:16px;width:85%}
+.burger:hover .bars i{width:100%}
+.burger:hover{color:var(--cherry)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand svg{width:46px;height:46px}
+.brand b{font-family:var(--syne);font-weight:800;font-size:19px;letter-spacing:.04em}
+.nav-apply{justify-self:end;text-decoration:none;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;background:var(--navy);color:var(--ivory);padding:11px 18px;border-radius:999px;transition:background .2s}
+.nav-apply:hover{background:var(--cherry)}
+@media(max-width:600px){.burger .lbl{display:none}.brand b{display:none}}
+
+/* MENU OVERLAY */
+.menu{position:fixed;inset:0;z-index:80;background:var(--navy);color:var(--ivory);display:flex;flex-direction:column;padding:26px 28px 34px;clip-path:circle(0 at calc(100% - 44px) 36px);transition:clip-path .6s cubic-bezier(.7,0,.2,1);visibility:hidden;overflow-y:auto}
+.menu.open{clip-path:circle(150% at calc(100% - 44px) 36px);visibility:visible}
+.menu .top{display:flex;justify-content:space-between;align-items:center;max-width:1240px;width:100%;margin:0 auto}
+.close{background:none;border:0;color:var(--ivory);cursor:pointer;display:flex;gap:12px;align-items:center}
+.close .x{width:30px;height:30px;position:relative}
+.close .x:before,.close .x:after{content:"";position:absolute;left:0;top:14px;width:30px;height:2.5px;background:currentColor;transform:rotate(45deg)}
+.close .x:after{transform:rotate(-45deg)}
+.close:hover{color:var(--denim)}
+.menu ol{list-style:none;margin:auto;max-width:1240px;width:100%;padding:30px 0}
+.menu li{overflow:hidden;border-bottom:1px solid rgba(242,238,231,.14)}
+.menu li a{display:flex;align-items:baseline;gap:18px;text-decoration:none;padding:9px 0;font-family:var(--syne);font-weight:800;font-size:clamp(24px,min(3.8vw,5vh),44px);line-height:1;text-transform:uppercase;letter-spacing:-.03em;transform:translateY(105%);transition:transform .6s cubic-bezier(.2,.8,.2,1),color .2s}
+.menu.open li a{transform:none}
+.menu li:nth-child(2) a{transition-delay:.05s}.menu li:nth-child(3) a{transition-delay:.1s}.menu li:nth-child(4) a{transition-delay:.15s}.menu li:nth-child(5) a{transition-delay:.2s}.menu li:nth-child(6) a{transition-delay:.25s}.menu li:nth-child(7) a{transition-delay:.3s}.menu li:nth-child(8) a{transition-delay:.35s}
+.menu li a small{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--denim);font-weight:400}
+.menu li a:hover{color:var(--cherry)}
+.menu li a:hover em.s{color:var(--denim)}
+.menu .foot{max-width:1240px;width:100%;margin:0 auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;opacity:.8}
+.menu .foot a{text-decoration:none}
+
+/* HERO */
+.hero{padding:70px 0 40px;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+.kicker{display:inline-flex;gap:10px;align-items:center;margin-bottom:26px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--cherry);display:inline-block;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+h1{font-family:var(--syne);font-weight:800;font-size:clamp(46px,7.4vw,108px);line-height:.92;letter-spacing:-.035em;text-transform:uppercase}
+h1 em.s{text-transform:none;font-size:1.08em;color:var(--cherry);letter-spacing:-.01em}
+.lede{font-size:19px;max-width:540px;margin:28px 0 34px;color:rgba(12,50,74,.82)}
+.ctas{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn-cherry{display:inline-flex;align-items:center;gap:10px;background:var(--cherry);color:var(--ivory);text-decoration:none;font-weight:600;padding:17px 26px;border-radius:999px;box-shadow:0 6px 0 var(--navy);transition:transform .15s,box-shadow .15s}
+.btn-cherry:hover{transform:translateY(3px);box-shadow:0 3px 0 var(--navy)}
+.btn-line{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:600;padding:16px 4px;border-bottom:2px solid var(--navy)}
+.btn-line:hover{color:var(--cherry);border-color:var(--cherry)}
+.spots{margin-top:26px;display:flex;align-items:center;gap:12px;font-size:14px}
+.spots .bar{display:flex;gap:4px}
+.spots .bar i{width:22px;height:8px;border-radius:2px;background:var(--cherry)}
+.spots .bar i.off{background:rgba(12,50,74,.15)}
+.stack{position:relative;height:540px}
+.frame{position:absolute;width:62%;aspect-ratio:4/5;border-radius:6px;overflow:hidden;box-shadow:0 30px 60px -25px rgba(12,50,74,.45);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.frame .tag{position:absolute;left:12px;bottom:12px;background:rgba(242,238,231,.92);padding:6px 9px;border-radius:3px;font-family:var(--mono);font-size:10px;letter-spacing:.12em}
+.f1{left:0;top:40px;transform:rotate(-6deg);background:linear-gradient(160deg,var(--denim),#7f9dbf)}
+.f2{left:20%;top:0;transform:rotate(2deg);z-index:2;background:linear-gradient(170deg,#c52531,var(--cherry) 60%,#7d0a12)}
+.f3{right:0;top:80px;transform:rotate(8deg);background:linear-gradient(160deg,#8a4a39,var(--choc))}
+.stack:hover .f1{transform:rotate(-10deg) translate(-14px,6px)}
+.stack:hover .f3{transform:rotate(12deg) translate(14px,6px)}
+.frame .eye{position:absolute;inset:0;display:grid;place-items:center}
+.frame .eye svg{width:38%;height:auto;opacity:.95}
+.stamp{position:absolute;right:-6px;bottom:30px;z-index:3;width:132px;height:132px;animation:spin 18s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}.stack{height:440px;max-width:440px}}
+
+/* MARQUEE */
+.marquee{background:var(--navy);color:var(--ivory);overflow:hidden;padding:18px 0;margin-top:40px}
+.marquee .track{display:flex;gap:46px;width:max-content;animation:slide 34s linear infinite;font-family:var(--syne);font-weight:800;font-size:28px;text-transform:uppercase;letter-spacing:.01em;white-space:nowrap}
+.marquee .track span:nth-child(even){color:var(--denim)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* SECTION HEAD */
+section{padding:110px 0;scroll-margin-top:72px}
+.head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:54px;flex-wrap:wrap}
+.head .num{color:var(--cherry);margin-bottom:14px;display:block}
+h2{font-family:var(--syne);font-weight:800;font-size:clamp(36px,5vw,68px);line-height:.96;letter-spacing:-.03em;text-transform:uppercase;max-width:780px}
+h2 em.s{text-transform:none;color:var(--cherry)}
+.head p{max-width:380px;color:rgba(12,50,74,.78)}
+
+/* WHO WE ARE */
+.manifesto{font-family:var(--syne);font-weight:700;font-size:clamp(28px,3.6vw,50px);line-height:1.12;letter-spacing:-.02em;max-width:1100px}
+.manifesto .strike{position:relative;color:rgba(12,50,74,.35);white-space:nowrap}
+.manifesto .strike:after{content:"";position:absolute;left:-2%;right:-2%;top:54%;height:4px;background:var(--cherry);transform:rotate(-2deg)}
+.manifesto em.s{color:var(--cherry)}
+.manifesto .hl{background:var(--denim);padding:0 .18em;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.roles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:70px}
+.role{background:#fff7;border:1px solid var(--line);border-radius:10px;padding:26px 22px 28px;position:relative;overflow:hidden;transition:transform .3s,background .3s}
+.role:hover{transform:translateY(-6px);background:var(--navy);color:var(--ivory)}
+.role:hover p{color:rgba(242,238,231,.8)}
+.role .ico{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;margin-bottom:34px;font-family:var(--syne);font-weight:800;font-size:20px;color:var(--ivory)}
+.role h3{font-family:var(--syne);font-weight:800;font-size:24px;text-transform:uppercase;line-height:1;margin:8px 0 12px}
+.role p{font-size:15px;color:rgba(12,50,74,.75)}
+.worlds{margin-top:60px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.worlds span.w{border:1.5px solid var(--navy);border-radius:999px;padding:10px 18px;font-size:15px;font-weight:500;transition:background .2s,color .2s}
+.worlds span.w:hover{background:var(--cherry);border-color:var(--cherry);color:var(--ivory)}
+@media(max-width:1000px){.roles{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.roles{grid-template-columns:1fr}}
+
+/* WORK */
+.work{background:var(--ivory-2)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tile{aspect-ratio:4/5;border-radius:6px;position:relative;overflow:hidden;color:var(--ivory)}
+.tile .bg{position:absolute;inset:0;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.tile:hover .bg{transform:scale(1.05)}
+.tile .meta{position:absolute;left:0;right:0;bottom:0;padding:20px;background:linear-gradient(transparent,rgba(12,50,74,.55))}
+.tile h3{font-family:var(--syne);font-weight:800;font-size:26px;line-height:1;text-transform:uppercase;letter-spacing:-.01em}
+.tile .mode{position:absolute;top:16px;left:16px;background:var(--ivory);color:var(--navy);padding:5px 9px;border-radius:3px}
+.tile .ai{position:absolute;top:16px;right:16px;border:1px solid var(--ivory);padding:4px 8px;border-radius:999px;font-family:var(--mono);font-size:10px;letter-spacing:.1em}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.tile h3{font-size:19px}}
+
+/* CAST */
+.cast{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.member{border-radius:10px;overflow:hidden;background:#fff7;border:1px solid var(--line);display:flex;flex-direction:column}
+.portrait{aspect-ratio:3/4;position:relative;display:grid;place-items:center;overflow:hidden}
+.portrait b{font-family:var(--serif);font-style:italic;font-weight:400;font-size:150px;line-height:1;color:rgba(242,238,231,.9);transition:transform .5s}
+.member:hover .portrait b{transform:scale(1.12) rotate(-4deg)}
+.portrait .no{position:absolute;top:12px;left:12px;color:var(--ivory)}
+.member .info{padding:18px 18px 22px}
+.member h3{font-family:var(--syne);font-weight:800;font-size:24px;text-transform:uppercase}
+.member p{font-size:14px;color:rgba(12,50,74,.75);margin-top:6px}
+.member.exclusive{background:var(--cherry);color:var(--ivory);border-color:var(--cherry)}
+.member.exclusive .portrait{background:repeating-linear-gradient(135deg,#9c0c16 0 14px,#B20E19 14px 28px)}
+.member.exclusive .portrait b{font-family:var(--syne);font-style:normal;font-weight:800;font-size:96px}
+.member.exclusive p{color:rgba(242,238,231,.85)}
+.lock{display:inline-block;margin-top:12px;background:var(--ivory);color:var(--cherry);padding:5px 9px;border-radius:3px}
+@media(max-width:1100px){.cast{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.cast{grid-template-columns:repeat(2,1fr)}.portrait b{font-size:100px}}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);border-top:1.5px solid var(--navy)}
+.step{padding:34px 30px 10px 0;border-right:1px solid var(--line)}
+.step+.step{padding-left:30px}
+.step:last-child{border-right:0}
+.step .big{font-family:var(--syne);font-weight:800;font-size:84px;line-height:1;color:var(--denim);margin-bottom:16px}
+.step h3{font-family:var(--syne);font-weight:700;font-size:24px;margin-bottom:10px}
+.step p{color:rgba(12,50,74,.78)}
+@media(max-width:900px){.steps{grid-template-columns:1fr}.step,.step+.step{padding:30px 0;border-right:0;border-bottom:1px solid var(--line)}}
+
+/* PACKAGES */
+.packs{background:var(--navy);color:var(--ivory)}
+.packs .head p{color:rgba(242,238,231,.78)}
+.packs h2 em.s{color:var(--denim)}
+.toggle{display:inline-flex;border:1px solid rgba(242,238,231,.4);border-radius:999px;padding:4px}
+.toggle button{background:none;border:0;color:var(--ivory);font-family:var(--mono);font-size:12px;letter-spacing:.12em;padding:9px 16px;border-radius:999px;cursor:pointer}
+.toggle button.on{background:var(--ivory);color:var(--navy)}
+.offer{display:flex;align-items:center;gap:14px;background:var(--cherry);padding:16px 22px;border-radius:6px;margin-bottom:26px;flex-wrap:wrap}
+.offer b{font-family:var(--syne);font-weight:800;font-size:20px;text-transform:uppercase}
+.offer .left{margin-left:auto;display:flex;gap:4px;align-items:center}
+.offer .left i{width:16px;height:16px;border-radius:50%;background:var(--ivory)}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:stretch}
+.card{border:1px solid rgba(242,238,231,.22);border-radius:8px;padding:26px 20px;display:flex;flex-direction:column;gap:12px;transition:background .25s,transform .25s;position:relative}
+.card:hover{background:rgba(242,238,231,.06);transform:translateY(-4px)}
+.card.hot{background:var(--ivory);color:var(--navy);box-shadow:0 0 0 3px var(--cherry)}
+.card.hot:hover{background:#fff}
+.card .ribbon{position:absolute;top:-13px;left:20px;background:var(--cherry);color:var(--ivory);padding:5px 10px;border-radius:3px}
+.card .label{opacity:.7}
+.card h3{font-family:var(--syne);font-weight:800;font-size:26px;text-transform:uppercase;line-height:1}
+.card .for{font-size:14px;opacity:.8;min-height:42px}
+.price{font-family:var(--syne);font-weight:700;font-size:28px;letter-spacing:-.02em;line-height:1}
+.price small{font-family:var(--mono);font-size:11px;letter-spacing:.1em;opacity:.7;margin-left:4px}
+.card ul{list-style:none;font-size:14.5px;display:flex;flex-direction:column;gap:7px;flex:1;border-top:1px solid rgba(242,238,231,.18);padding-top:14px}
+.card.hot ul{border-color:var(--line)}
+.card li{padding-left:18px;position:relative}
+.card li:before{content:"✦";position:absolute;left:0;color:var(--denim)}
+.card.hot li:before{color:var(--cherry)}
+.card li b{font-weight:600}
+.card a{text-align:center;text-decoration:none;font-weight:600;padding:12px;border-radius:999px;border:1px solid currentColor;transition:background .2s,color .2s}
+.card a:hover{background:var(--ivory);color:var(--navy)}
+.card.hot a{background:var(--cherry);color:var(--ivory);border-color:var(--cherry)}
+.card.hot a:hover{background:var(--navy);border-color:var(--navy)}
+.fx{margin-top:18px;font-size:12px;opacity:.6}
+@media(max-width:1180px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.cards{grid-template-columns:1fr}}
+
+/* SHOP */
+.shop{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.prod{border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#fff8;display:flex;flex-direction:column}
+.cover{aspect-ratio:4/3;position:relative;display:grid;place-items:center;padding:28px}
+.book{width:58%;aspect-ratio:3/4;border-radius:3px 8px 8px 3px;box-shadow:12px 16px 30px -12px rgba(12,50,74,.5);padding:16px;display:flex;flex-direction:column;justify-content:space-between;transform:rotate(-4deg);transition:transform .4s}
+.cover.cimg{padding:0;aspect-ratio:4/5;background:var(--navy)}
+.cover.cimg img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.prod:hover .cover.cimg img{transform:scale(1.03)}
+.prod:hover .book{transform:rotate(0) scale(1.04)}
+.book b{font-family:var(--syne);font-weight:800;font-size:clamp(15px,1.6vw,21px);line-height:1;text-transform:uppercase}
+.book span{font-family:var(--mono);font-size:9px;letter-spacing:.12em}
+.prod .body{padding:24px;display:flex;flex-direction:column;gap:10px;flex:1}
+.prod h3{font-family:var(--syne);font-weight:700;font-size:23px}
+.prod p{color:rgba(12,50,74,.75);font-size:15px;flex:1}
+.prod .row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.prod .row b{font-family:var(--syne);font-size:22px}
+.prod a{text-decoration:none;font-weight:600;background:var(--navy);color:var(--ivory);padding:11px 18px;border-radius:999px;transition:background .2s}
+.prod a:hover{background:var(--cherry)}
+.free{background:var(--cherry)!important}
+.prod .row b s{font-size:15px;opacity:.45;font-weight:500;margin-right:6px}
+.prod .row b span{color:var(--cherry)}
+
+
+/* APPLY */
+.apply{background:var(--denim)}
+.apply .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px;align-items:start}
+.apply .side{position:sticky;top:110px}
+.apply h2 em.s{color:var(--navy)}
+form{background:var(--ivory);border-radius:10px;padding:34px;display:grid;grid-template-columns:1fr 1fr;gap:22px 18px;box-shadow:0 8px 0 var(--navy)}
+.part{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin-top:14px;padding-top:20px;border-top:1.5px solid var(--navy)}
+.part:first-child{margin-top:0;padding-top:0;border-top:0}
+.part b{font-family:var(--syne);font-weight:800;font-size:20px;text-transform:uppercase}
+.part span{color:var(--cherry)}
+.fld{display:flex;flex-direction:column;gap:7px}
+.fld.full{grid-column:1/-1}
+.fld .hint{font-size:13px;color:rgba(12,50,74,.6);margin-top:-2px}
+label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+input,select,textarea{font:inherit;font-size:16px;color:var(--navy);background:transparent;border:0;border-bottom:1.5px solid rgba(12,50,74,.35);padding:9px 0;outline:none;border-radius:0}
+textarea{resize:vertical;min-height:84px;line-height:1.45}
+input::placeholder,textarea::placeholder{color:rgba(12,50,74,.4)}
+input:focus,select:focus,textarea:focus{border-color:var(--cherry)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label{text-transform:none;letter-spacing:0;font-family:var(--sans);font-size:14px;border:1px solid rgba(12,50,74,.35);padding:8px 14px;border-radius:999px;cursor:pointer;transition:all .15s}
+.chips input:checked+label{background:var(--navy);color:var(--ivory);border-color:var(--navy)}
+.chips input:focus-visible+label{outline:2px solid var(--cherry)}
+.drop{border:1.5px dashed rgba(12,50,74,.4);border-radius:8px;padding:22px;text-align:center;cursor:pointer;transition:background .2s,border-color .2s;font-size:15px}
+.drop:hover,.drop.over{background:#fff;border-color:var(--cherry)}
+.drop input{display:none}
+.drop .files{font-family:var(--mono);font-size:11px;margin-top:10px;color:var(--cherry);letter-spacing:.06em}
+form button[type=submit]{grid-column:1/-1;background:var(--cherry);color:var(--ivory);border:0;font:inherit;font-weight:600;font-size:17px;padding:18px;border-radius:999px;cursor:pointer;transition:background .2s;margin-top:6px}
+form button[type=submit]:hover{background:var(--navy)}
+.err{grid-column:1/-1;color:var(--cherry);font-size:14px;display:none}
+.done{grid-column:1/-1;display:none;background:var(--navy);color:var(--ivory);border-radius:8px;padding:22px;font-size:15px}
+.done a{color:var(--denim);font-weight:600}
+.done pre{white-space:pre-wrap;font-family:var(--mono);font-size:12px;background:rgba(242,238,231,.08);padding:12px;border-radius:6px;margin:12px 0;max-height:260px;overflow:auto}
+.done .acts{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.done button{background:var(--ivory);color:var(--navy);border:0;font:inherit;font-weight:600;font-size:14px;padding:10px 16px;border-radius:999px;cursor:pointer}
+.perks{list-style:none;margin-top:30px;display:flex;flex-direction:column;gap:14px}
+.perks li{display:flex;gap:14px;align-items:baseline;font-size:17px}
+.perks li b{font-family:var(--mono);font-size:12px;color:var(--cherry)}
+@media(max-width:900px){.apply .wrap{grid-template-columns:1fr}.apply .side{position:static}form{grid-template-columns:1fr;padding:24px}}
+
+/* FAQ */
+.faq{max-width:860px}
+details{border-bottom:1px solid var(--line);padding:24px 0}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;font-family:var(--syne);font-weight:700;font-size:22px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";color:var(--cherry);font-size:30px;line-height:.8;transition:transform .25s}
+details[open] summary:after{transform:rotate(45deg)}
+details p{margin-top:14px;color:rgba(12,50,74,.78);max-width:700px}
+
+/* FOOTER */
+footer{background:var(--cherry);color:var(--ivory);padding:80px 0 34px;overflow:hidden}
+footer .pre{font-family:var(--syne);font-weight:700;font-size:clamp(22px,2.6vw,34px);max-width:720px;margin-bottom:30px;line-height:1.15}
+footer .big{font-family:var(--syne);font-weight:800;font-size:clamp(70px,17vw,250px);line-height:.8;letter-spacing:-.05em;text-transform:uppercase}
+footer .row{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap;margin-top:50px}
+footer .logo svg{width:120px;height:120px}
+footer a{text-decoration:none;border-bottom:1px solid rgba(242,238,231,.5)}
+footer a:hover{border-color:var(--ivory)}
+footer .btn-ivory{display:inline-block;background:var(--ivory);color:var(--cherry);border:0;padding:16px 24px;border-radius:999px;font-weight:600;box-shadow:0 6px 0 var(--navy);transition:transform .15s,box-shadow .15s}
+footer .btn-ivory:hover{transform:translateY(3px);box-shadow:0 3px 0 var(--navy)}
+.fl{display:flex;gap:26px;flex-wrap:wrap}
+
+
+/* compact shop list */
+.shop{display:flex;flex-direction:column;gap:0;border-top:1.5px solid var(--navy)}
+.prod{display:grid;grid-template-columns:110px 1fr auto;gap:26px;align-items:center;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:18px 0;transition:background .2s}
+.prod:hover{background:#fff6}
+.prod .cover.cimg{width:110px;aspect-ratio:4/5;border-radius:5px;overflow:hidden;box-shadow:0 8px 18px -8px rgba(12,50,74,.45)}
+.prod .body{padding:0;display:grid;grid-template-columns:1fr auto;gap:6px 24px;align-items:center}
+.prod h3{font-size:22px}
+.prod p{grid-column:1;font-size:15px;max-width:520px}
+.prod .row{grid-column:2;grid-row:1/3;margin:0;display:flex;gap:18px;align-items:center}
+.prod .row b{white-space:nowrap}
+.prod .body{min-width:0}
+.prod a{white-space:nowrap}
+@media(max-width:760px){.prod{grid-template-columns:84px 1fr;gap:16px}.prod .cover.cimg{width:84px}.prod .body{grid-template-columns:1fr}.prod .row{grid-column:1;grid-row:auto;margin-top:6px;justify-content:space-between;gap:10px}.prod .row b{font-size:17px}.prod .row b s{font-size:12px}.prod a{padding:9px 16px;font-size:14px}.prod h3{font-size:18px}.prod p{font-size:14px}}
+
+.hero .wrap{grid-template-columns:1fr 1fr}
+.stack{height:560px}
+.frame{width:50%}
+.f1{left:-4%;top:70px;transform:rotate(-7deg)}
+.f2{left:25%;top:0;transform:rotate(1deg)}
+.f3{left:auto;right:-4%;top:70px;transform:rotate(7deg)}
+.stack:hover .f1{transform:rotate(-10deg) translate(-12px,6px)}
+.stack:hover .f3{transform:rotate(10deg) translate(12px,6px)}
+.stamp{right:auto;left:50%;bottom:0;margin-left:-66px}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}.stack{height:420px;width:100%;max-width:520px;margin:10px auto 0}.frame{width:56%}}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.looknav{position:sticky;top:72px;z-index:20;display:flex;gap:8px;overflow-x:auto;padding:12px 0;margin-bottom:24px;background:var(--ivory-2);scrollbar-width:none}
+.looknav::-webkit-scrollbar,.rail::-webkit-scrollbar{display:none}
+.looknav a{flex:0 0 auto;text-decoration:none;font-size:14px;font-weight:500;border:1.5px solid var(--navy);border-radius:999px;padding:8px 15px;transition:all .2s;white-space:nowrap}
+.looknav a:hover{background:var(--navy);color:var(--ivory)}
+.cat{padding:44px 0;border-top:1.5px solid var(--navy);scroll-margin-top:140px}
+.cat-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:22px;flex-wrap:wrap}
+.cat-head h3,.cbio h3{font-family:var(--syne);font-weight:800;font-size:clamp(28px,3.4vw,44px);text-transform:uppercase;letter-spacing:-.02em;line-height:1;margin:6px 0 10px}
+.cat-head p{max-width:520px;color:rgba(12,50,74,.78)}
+.num2{color:var(--cherry)}
+.cat-act{display:flex;gap:14px;align-items:center}
+.want,.bookbtn{background:var(--cherry);color:var(--ivory);border:0;font:inherit;font-weight:600;font-size:15px;padding:13px 20px;border-radius:999px;cursor:pointer;box-shadow:0 4px 0 var(--navy);transition:transform .15s,box-shadow .15s}
+.want:hover,.bookbtn:hover{transform:translateY(2px);box-shadow:0 2px 0 var(--navy)}
+.want.added{background:var(--navy);box-shadow:0 4px 0 var(--cherry)}
+.arrows{display:inline-flex;gap:6px}
+.arrows button{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--navy);background:transparent;color:var(--navy);font-size:18px;cursor:pointer;transition:all .2s}
+.arrows button:hover{background:var(--navy);color:var(--ivory)}
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:6px;scrollbar-width:none}
+.shot{flex:0 0 clamp(230px,26vw,330px);aspect-ratio:4/5;border-radius:8px;overflow:hidden;position:relative;scroll-snap-align:start;cursor:zoom-in;background:var(--ivory)}
+.shot.wide{flex-basis:clamp(368px,41.6vw,528px);aspect-ratio:16/10}
+.shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.shot:hover img{transform:scale(1.04)}
+.shot.sheet img{object-fit:contain}
+.ctag{position:absolute;left:10px;top:10px;background:var(--ivory);color:var(--navy);padding:5px 9px;border-radius:3px;font-size:10px}
+.shot.sheet .ctag{background:var(--cherry);color:var(--ivory)}
+.shot.sheet:after{content:"→";position:absolute;right:-4px;top:50%;transform:translateY(-50%);font-family:var(--syne);font-weight:800;font-size:40px;color:var(--cherry)}
+.ctabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+.ctab{font:inherit;font-family:var(--syne);font-weight:800;font-size:18px;text-transform:uppercase;background:transparent;color:var(--navy);border:1.5px solid var(--navy);border-radius:999px;padding:10px 22px;cursor:pointer;transition:all .2s}
+.ctab.on{background:var(--navy);color:var(--ivory)}
+.ctab[data-c=yours]{border-color:var(--cherry);color:var(--cherry)}
+.ctab[data-c=yours].on{background:var(--cherry);color:var(--ivory)}
+.cpane{display:none;grid-template-columns:300px 1fr;gap:28px;align-items:start}
+.cpane.on{display:grid}
+.cbio{display:flex;flex-direction:column;gap:12px;align-items:flex-start;position:sticky;top:110px}
+.cbio p{color:rgba(12,50,74,.78)}
+.shot.mystery{display:grid;place-items:center;background:repeating-linear-gradient(135deg,#9c0c16 0 14px,#B20E19 14px 28px);cursor:default}
+.shot.mystery b{font-family:var(--syne);font-weight:800;font-size:120px;color:var(--ivory)}
+@media(max-width:860px){.cpane{grid-template-columns:1fr}.cbio{position:static}}
+.lb{position:fixed;inset:0;z-index:90;background:rgba(12,50,74,.94);display:none;place-items:center;padding:30px;cursor:zoom-out}
+.lb.on{display:grid}
+.lb img{max-width:100%;max-height:88vh;border-radius:6px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.lb .x{position:absolute;top:18px;right:24px;color:var(--ivory)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,120px);background:var(--navy);color:var(--ivory);padding:14px 20px;border-radius:999px;z-index:95;font-size:15px;transition:transform .35s cubic-bezier(.2,.8,.2,1);display:flex;gap:14px;align-items:center;box-shadow:0 10px 30px rgba(12,50,74,.3)}
+.toast{visibility:hidden}.toast.on{transform:translate(-50%,0);visibility:visible}
+.toast a{color:var(--denim);font-weight:600}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <div class="top">
+    <span class="mono" style="color:var(--denim)">@unshot.visuals</span>
+    <button class="close" id="closeMenu" aria-label="Close menu"><span class="mono">Close</span><span class="x"></span></button>
+  </div>
+  <ol>
+    <li><a href="#about"><small>00</small>Who we <em class="s">are</em></a></li>
+    <li><a href="#work"><small>01</small>The <em class="s">work</em></a></li>
+    <li><a href="#cast"><small>02</small>Meet the <em class="s">cast</em></a></li>
+    <li><a href="#how"><small>03</small>How it <em class="s">works</em></a></li>
+    <li><a href="#packages"><small>04</small><em class="s">Packages</em></a></li>
+    <li><a href="#shop"><small>05</small>The <em class="s">shop</em></a></li>
+    <li><a href="#apply"><small>06</small>Claim a <em class="s">spot</em></a></li>
+    <li><a href="#faq"><small>07</small><em class="s">FAQ</em></a></li>
+  </ol>
+  <div class="foot mono">
+    <a href="https://instagram.com/unshot.visuals">Instagram ↗</a>
+    <span>Only 4 new brands a month</span>
+  </div>
+</div>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="UNSHOT home"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="UNSHOT VISUALS logo" viewBox="0 0 1080.0 1080.0"><defs><path id="g1A" d="M285 0L10 0L439-640L717-640L1150 0L875 0L812-97L347-97L285 0ZM444-247L715-247L579-457L444-247Z"/><path id="g1H" d="M960-419L960-640L1210-640L1210 0L960 0L960-229L320-229L320 0L70 0L70-640L320-640L320-419L960-419Z"/><path id="g1I" d="M85 0L85-640L335-640L335 0L85 0Z"/><path id="g1L" d="M70-640L320-640L320-190L903-190L903 0L70 0L70-640Z"/><path id="g1N" d="M320-640L980-251L980-640L1230-640L1230 0L980 0L320-382L320 0L70 0L70-640L320-640Z"/><path id="g1O" d="M665 20L665 20Q447 20 314-19Q181-57 121-133Q60-208 60-320L60-320Q60-432 121-508Q181-583 314-622Q447-660 665-660L665-660Q883-660 1016-622Q1149-583 1210-508Q1270-432 1270-320L1270-320Q1270-208 1210-133Q1149-57 1016-19Q883 20 665 20ZM665-170L665-170Q768-170 843-183Q918-195 959-228Q1000-260 1000-320L1000-320Q1000-380 959-413Q918-445 843-458Q768-470 665-470L665-470Q562-470 485-458Q407-445 364-413Q320-380 320-320L320-320Q320-260 364-228Q407-195 485-183Q562-170 665-170Z"/><path id="g1S" d="M35-235L35-235L308-235Q315-214 349-200Q383-185 441-178Q498-170 574-170L574-170Q649-170 693-175Q736-179 754-191Q772-202 772-222L772-222Q772-241 743-252Q714-262 640-266Q566-270 432-270L432-270Q332-270 260-280Q187-289 141-310Q94-330 72-362Q50-393 50-437L50-437Q50-513 102-563Q153-612 258-637Q362-661 519-661L519-661Q749-661 871-595Q992-528 992-403L992-403L733-403Q728-436 671-454Q614-471 509-471L509-471Q405-471 355-459Q304-447 304-418L304-418Q304-403 318-394Q332-385 367-380Q401-374 464-372Q527-370 624-370L624-370Q731-370 806-360Q881-349 928-328Q974-307 995-275Q1016-242 1016-198L1016-198Q1016-122 968-74Q920-26 816-3Q712 20 544 20L544 20Q449 20 370 9Q290-2 228-24Q166-45 123-77Q80-108 58-148Q35-187 35-235Z"/><path id="g1T" d="M30-450L30-640L1070-640L1070-450L675-450L675 0L425 0L425-450L30-450Z"/><path id="g1U" d="M969-365L969-365L969-640L1219-640L1219-320Q1219-235 1188-176Q1156-116 1100-78Q1044-39 971-18Q898 3 815 12Q731 20 645 20L645 20Q554 20 469 12Q384 3 312-18Q239-39 185-78Q131-116 101-176Q70-235 70-320L70-320L70-640L320-640L320-365Q320-285 359-243Q398-201 471-186Q543-170 645-170L645-170Q744-170 817-186Q890-201 930-243Q969-285 969-365Z"/><path id="g1V" d="M756 0L408 0L20-640L302-640L582-120L862-640L1140-640L756 0Z"/></defs><g transform="scale(9.81818)"><circle cx="55" cy="55" r="54" fill="#B20E19"/><circle cx="55" cy="55" r="51" fill="none" stroke="#F2EEE7" stroke-width="0.7"/><use href="#g1U" fill="#F2EEE7" transform="translate(55 55) rotate(-59.75) translate(-7.41 -38.00) scale(0.01150)"/><use href="#g1N" fill="#F2EEE7" transform="translate(55 55) rotate(-34.44) translate(-7.47 -38.00) scale(0.01150)"/><use href="#g1S" fill="#F2EEE7" transform="translate(55 55) rotate(-11.15) translate(-6.07 -38.00) scale(0.01150)"/><use href="#g1H" fill="#F2EEE7" transform="translate(55 55) rotate(11.97) translate(-7.36 -38.00) scale(0.01150)"/><use href="#g1O" fill="#F2EEE7" transform="translate(55 55) rotate(37.46) translate(-7.65 -38.00) scale(0.01150)"/><use href="#g1T" fill="#F2EEE7" transform="translate(55 55) rotate(61.39) translate(-6.33 -38.00) scale(0.01150)"/><use href="#g1V" fill="#F2EEE7" transform="translate(55 55) rotate(50.23) translate(-6.67 45.36) scale(0.01150)"/><use href="#g1I" fill="#F2EEE7" transform="translate(55 55) rotate(36.35) translate(-2.42 45.36) scale(0.01150)"/><use href="#g1S" fill="#F2EEE7" transform="translate(55 55) rotate(23.23) translate(-6.07 45.36) scale(0.01150)"/><use href="#g1U" fill="#F2EEE7" transform="translate(55 55) rotate(3.80) translate(-7.41 45.36) scale(0.01150)"/><use href="#g1A" fill="#F2EEE7" transform="translate(55 55) rotate(-16.39) translate(-6.67 45.36) scale(0.01150)"/><use href="#g1L" fill="#F2EEE7" transform="translate(55 55) rotate(-34.06) translate(-5.42 45.36) scale(0.01150)"/><use href="#g1S" fill="#F2EEE7" transform="translate(55 55) rotate(-50.98) translate(-6.07 45.36) scale(0.01150)"/><circle cx="13" cy="55" r="1.6" fill="#F2EEE7"/><circle cx="97" cy="55" r="1.6" fill="#F2EEE7"/><circle cx="55" cy="55" r="26" fill="#F2EEE7"/><circle cx="55" cy="55" r="19.5" fill="#A9BFD8"/><circle cx="55" cy="55" r="9.5" fill="#0C324A"/><path transform="translate(60.51 49.49) scale(0.470)" d="M0,-10 C1,-2 2,-1 10,0 C2,1 1,2 0,10 C-1,2 -2,1 -10,0 C-2,-1 -1,-2 0,-10Z" fill="#F2EEE7"/></g></svg><b>UNSHOT</b></a>
+    <div class="nav-right">
+      <a class="nav-apply" href="#apply">Claim a spot</a>
+      <button class="burger" id="openMenu" aria-label="Open menu" aria-controls="menu" aria-expanded="false"><span class="lbl mono">Menu</span><span class="bars"><i></i><i></i><i></i></span></button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <div class="kicker mono"><span class="dot"></span> AI campaign studio · 4 brand spots this month</div>
+      <h1>Campaigns you <em class="s">never</em> had to shoot.</h1>
+      <p class="lede">Your product deserves better than a white backdrop and a ring light. We put it in worlds that don't exist, next to faces that don't exist, and it still looks more real than your last shoot.</p>
+      <div class="ctas">
+        <a class="btn-cherry" href="#apply">Claim your spot →</a>
+        <a class="btn-line" href="#work">Show me the work</a>
+      </div>
+      <div class="spots"><span class="bar"><i></i><i></i><i></i><i class="off"></i></span><span>We only take <b>4 new brands a month</b>. Not because we can't do more. Because we refuse to do it worse.</span></div>
+    </div>
+    <div class="stack" aria-hidden="true">
+      <div class="frame f1"><img src="assets/hero-1.webp" alt=""><span class="tag">IMPOSSIBLE WORLDS</span></div>
+      <div class="frame f2"><img src="assets/hero-2.webp" alt=""><span class="tag">EDITORIAL</span></div>
+      <div class="frame f3"><img src="assets/hero-3.webp" alt=""><span class="tag">PRODUCT WORLDS</span></div>
+      <svg class="stamp" viewBox="0 0 200 200"><defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><circle cx="100" cy="100" r="98" fill="#0C324A"/><text font-family="Space Mono, monospace" font-size="15.5" letter-spacing="4" fill="#F2EEE7"><textPath href="#circ">THIS IS AI · THIS IS AI · THIS IS AI ·</textPath></text><circle cx="100" cy="100" r="26" fill="#B20E19"/><circle cx="100" cy="100" r="12" fill="#A9BFD8"/></svg>
+    </div>
+  </div>
+  <div class="marquee" aria-hidden="true"><div class="track">
+    <span>Yes, it's AI</span><span>✦</span><span>No, you can't tell</span><span>✦</span><span>Worlds that don't exist</span><span>✦</span><span>Faces made for your brand</span><span>✦</span><span>Zero cameras harmed</span><span>✦</span>
+    <span>Yes, it's AI</span><span>✦</span><span>No, you can't tell</span><span>✦</span><span>Worlds that don't exist</span><span>✦</span><span>Faces made for your brand</span><span>✦</span><span>Zero cameras harmed</span><span>✦</span>
+  </div></div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <span class="num mono" style="color:var(--cherry);display:block;margin-bottom:26px">00 / Who we are</span>
+    <p class="manifesto">We're not a <span class="strike">photographer.</span> We're not a <span class="strike">filter.</span> We're the whole production house, minus the 6am call time. <em class="s">One idea,</em> built into a <span class="hl">world your product owns.</span></p>
+    <div class="roles">
+      <div class="role"><div class="ico" style="background:var(--cherry)">01</div><span class="mono">The studio</span><h3>The idea first</h3><p>Product on a plain backdrop? Hard pass. Every campaign starts with an idea nobody in your category has had yet.</p></div>
+      <div class="role"><div class="ico" style="background:var(--navy)">02</div><span class="mono">The casting desk</span><h3>We cast the face</h3><p>Book one of our regulars, or get a face built just for you. Nobody else gets to use it. Ever.</p></div>
+      <div class="role"><div class="ico" style="background:var(--choc)">03</div><span class="mono">The set</span><h3>We build the world</h3><p>A Paris street at 7am. A bowling lane that ends in the sea. A hotel bed made of strawberry milk. Name it. We'll build it.</p></div>
+      <div class="role"><div class="ico" style="background:var(--denim)">04</div><span class="mono">The edit room</span><h3>We finish it</h3><p>No folder of raw files and a "good luck". You get edits, stories, ads and motion, ready to post before your coffee gets cold.</p></div>
+    </div>
+    <div class="worlds"><span class="mono" style="margin-right:8px">Recently built →</span><span class="w">A bowling lane into the sea</span><span class="w">Room service, strawberry milk</span><span class="w">Lost luggage at the airport</span><span class="w">Euro street, running errands</span><span class="w">Rings on ice</span><span class="w">The fashion office</span></div>
+  </div>
+</section>
+
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="num mono">01 / The work</span><h2>Every frame here <em class="s">is AI.</em></h2></div>
+      <p>Go ahead, zoom in. We'll wait. Pick the looks you love, hit "Add to my brief", and it goes straight into your application.</p>
+    </div>
+    <nav class="looknav" aria-label="Looks"><a href="#look-one-photo">Just send the product</a><a href="#look-camera-roll">Camera Roll</a><a href="#look-on-set">On Set</a><a href="#look-editorial">Editorial</a><a href="#look-impossible">Impossible Worlds</a><a href="#look-product">Product Worlds</a><a href="#look-flash">Flash Hour</a><a href="#look-edit-room">The Edit Room</a></nav>
+    
+    <div class="cat" id="look-one-photo">
+      <div class="cat-head">
+        <div><span class="mono num2">01</span><h3>Just send the product</h3><p>No studio, no stylist, no location scout. You send us your product. We style the outfit, build the world and deliver the whole shoot.</p></div>
+        <div class="cat-act"><button class="want" type="button" data-look="Just send the product">Add to my brief →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      </div>
+      <div class="rail"><figure class="shot "><img src="assets/sa-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/sa-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/sa-3.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/sb-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/sb-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/sb-3.webp" loading="lazy" alt=""></figure></div>
+    </div>
+    <div class="cat" id="look-camera-roll">
+      <div class="cat-head">
+        <div><span class="mono num2">02</span><h3>Camera Roll</h3><p>UGC and candids that look like your best friend took them on holiday. The kind people actually stop for.</p></div>
+        <div class="cat-act"><button class="want" type="button" data-look="Camera Roll">Add to my brief →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      </div>
+      <div class="rail"><figure class="shot "><img src="assets/cr-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/cr-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/cr-3.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/cr-4.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/cr-5.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/cr-6.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/cr-7.webp" loading="lazy" alt=""></figure></div>
+    </div>
+    <div class="cat" id="look-on-set">
+      <div class="cat-head">
+        <div><span class="mono num2">03</span><h3>On Set</h3><p>Studio energy. Styled to the inch, lit like it cost a fortune, and it shows.</p></div>
+        <div class="cat-act"><button class="want" type="button" data-look="On Set">Add to my brief →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      </div>
+      <div class="rail"><figure class="shot "><img src="assets/os-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/os-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/os-3.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/os-4.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/os-5.webp" loading="lazy" alt=""></figure></div>
+    </div>
+    <div class="cat" id="look-editorial">
+      <div class="cat-head">
+        <div><span class="mono num2">04</span><h3>Editorial</h3><p>Magazine-grade frames with a story in them. The ones that end up on mood boards.</p></div>
+        <div class="cat-act"><button class="want" type="button" data-look="Editorial">Add to my brief →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      </div>
+      <div class="rail"><figure class="shot "><img src="assets/ed-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/ed-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/ed-3.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/ed-4.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/ed-5.webp" loading="lazy" alt=""></figure></div>
+    </div>
+    <div class="cat" id="look-impossible">
+      <div class="cat-head">
+        <div><span class="mono num2">05</span><h3>Impossible Worlds</h3><p>Giant lilies, heart-shaped windows, phones taller than people. Physics optional.</p></div>
+        <div class="cat-act"><button class="want" type="button" data-look="Impossible Worlds">Add to my brief →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      </div>
+      <div class="rail"><figure class="shot "><img src="assets/im-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/im-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/im-3.webp" loading="lazy" alt=""></figure></div>
+    </div>
+    <div class="cat" id="look-product">
+      <div class="cat-head">
+        <div><span class="mono num2">06</span><h3>Product Worlds</h3><p>Your product, but make it the main character. Rings on keyboards, gems on kiwis, matcha served like caviar.</p></div>
+        <div class="cat-act"><button class="want" type="button" data-look="Product Worlds">Add to my brief →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      </div>
+      <div class="rail"><figure class="shot "><img src="assets/pr-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/pr-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/pr-3.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/pr-4.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/pr-5.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/pr-6.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/pr-7.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/pr-8.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/pr-9.webp" loading="lazy" alt=""></figure></div>
+    </div>
+    <div class="cat" id="look-flash">
+      <div class="cat-head">
+        <div><span class="mono num2">07</span><h3>Flash Hour</h3><p>Direct flash, late nights, a little chaos. For brands that refuse to be beige.</p></div>
+        <div class="cat-act"><button class="want" type="button" data-look="Flash Hour">Add to my brief →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      </div>
+      <div class="rail"><figure class="shot "><img src="assets/fl-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/fl-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/fl-3.webp" loading="lazy" alt=""></figure></div>
+    </div>
+    <div class="cat" id="look-edit-room">
+      <div class="cat-head">
+        <div><span class="mono num2">08</span><h3>The Edit Room</h3><p>Finished posts, not raw files. Type, layouts, carousels and ads, edited and ready to drop.</p></div>
+        <div class="cat-act"><button class="want" type="button" data-look="The Edit Room">Add to my brief →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      </div>
+      <div class="rail"><figure class="shot "><img src="assets/er-1.webp" loading="lazy" alt=""></figure><figure class="shot wide"><img src="assets/er-wide.webp" loading="lazy" alt=""><span class="ctag mono">Swipe post</span></figure><figure class="shot "><img src="assets/er-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/er-3.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/er-4.webp" loading="lazy" alt=""></figure></div>
+    </div>
+  </div>
+</section>
+
+<section id="cast">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="num mono">02 / Meet the cast</span><h2>Faces that <em class="s">don't exist.</em> Yet.</h2></div>
+      <p>Same face, any world. Book one of our regulars, or get a face built from scratch for your brand. Approved by you. Off-limits to everyone else.</p>
+    </div>
+    <div class="ctabs" role="tablist"><button type="button" class="ctab on" data-c="claire">Claire</button><button type="button" class="ctab" data-c="lara">Lara</button><button type="button" class="ctab" data-c="omar">Omar</button><button type="button" class="ctab" data-c="nour">Nour</button><button type="button" class="ctab" data-c="yours">Yours only ✦</button></div>
+    <div class="cpane on" data-c="claire">
+      <div class="cbio"><span class="mono num2">No. 01</span><h3>Claire</h3><p>Big hair, bigger laugh. Always looks like she's late for something fun. Made for summer drops, travel and lifestyle.</p><button type="button" class="bookbtn" data-face="Claire">Book Claire →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      <div class="rail"><figure class="shot "><img src="assets/claire-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/claire-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/claire-3.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/claire-4.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/claire-5.webp" loading="lazy" alt=""></figure></div>
+    </div><div class="cpane" data-c="lara">
+      <div class="cbio"><span class="mono num2">No. 02</span><h3>Lara</h3><p>Looks like she drinks 3 liters of water a day. Born for beauty, skincare, eyewear and soft light.</p><button type="button" class="bookbtn" data-face="Lara">Book Lara →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      <div class="rail"><figure class="shot "><img src="assets/lara-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/lara-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/lara-3.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/lara-4.webp" loading="lazy" alt=""></figure></div>
+    </div><div class="cpane" data-c="omar">
+      <div class="cbio"><span class="mono num2">No. 03</span><h3>Omar</h3><p>Says nothing. Sells everything. Menswear, sneakers, city mornings, coastal summers.</p><button type="button" class="bookbtn" data-face="Omar">Book Omar →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      <div class="rail"><figure class="shot "><img src="assets/omar-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/omar-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/omar-3.webp" loading="lazy" alt=""></figure></div>
+    </div><div class="cpane" data-c="nour">
+      <div class="cbio"><span class="mono num2">No. 04</span><h3>Nour</h3><p>The cool girl your customers screenshot. Street style, fashion and everyday drops.</p><button type="button" class="bookbtn" data-face="Nour">Book Nour →</button><span class="arrows"><button type="button" class="prev" aria-label="Previous">←</button><button type="button" class="next" aria-label="Next">→</button></span></div>
+      <div class="rail"><figure class="shot "><img src="assets/nour-1.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/nour-2.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/nour-3.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/nour-4.webp" loading="lazy" alt=""></figure><figure class="shot "><img src="assets/nour-5.webp" loading="lazy" alt=""></figure></div>
+    </div><div class="cpane" data-c="yours">
+      <div class="cbio"><span class="mono num2">No. 05</span><h3>Yours only</h3><p>A face built from zero for your brand. You approve every detail. Nobody else will ever book it. Not even if they beg.</p><span class="lock mono">The Signature, Premium & Always On</span><button type="button" class="bookbtn" data-face="Exclusive character for my brand">Build mine →</button></div>
+      <div class="rail"><figure class="shot mystery"><b>?</b><span class="ctag mono">Coming to your brand</span></figure></div>
+    </div>
+  </div>
+</section>
+
+<section id="how" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="num mono">03 / How it works</span><h2>Three steps. <em class="s">Zero shoot days.</em></h2></div>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="big">01</div><h3>Send the brief</h3><p>Your product, your brand, your Pinterest obsession. Good product photos are all we need. We handle the rest.</p></div>
+      <div class="step"><div class="big">02</div><h3>We build the world</h3><p>You see the idea, the face and the plan first. Nothing gets made until you're obsessed with it.</p></div>
+      <div class="step"><div class="big">03</div><h3>Launch it</h3><p>Images, stories, ads and edits, sized for everywhere they'll live. You just hit post.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="packs" id="packages">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="num mono" style="color:var(--denim)">04 / Packages</span><h2>Choose your <em class="s">campaign.</em></h2></div>
+      <div>
+        <p style="margin-bottom:16px">Same price, any currency. Pick your fighter.</p>
+        <div class="toggle" role="group" aria-label="Currency"><button class="on" data-c="egp">EGP</button><button data-c="usd">USD $</button></div>
+      </div>
+    </div>
+    <div class="offer"><b>Founding brands: 30% off</b><span>First 3 brands only. After that, this banner disappears and so does the discount.</span><span class="left mono" aria-label="3 spots left"><i></i><i></i><i></i>&nbsp;3 left</span></div>
+    <div class="cards">
+      <div class="card"><span class="label mono">Start here</span><h3>Test Shot</h3><p class="for">The easiest yes you'll say this month. See your product in our world before you go big.</p><div class="price" data-egp="EGP 1,500" data-usd="$30">EGP 1,500</div>
+        <ul><li><b>3</b> campaign images</li><li><b>3</b> story versions</li><li><b>3</b> ad creatives</li><li>A character from our cast</li><li>Credited toward any package</li></ul><a href="#apply">Book the Test Shot</a></div>
+      <div class="card"><span class="label mono">The essential</span><h3>The Grid</h3><p class="for">One big idea, done properly. A full campaign, start to finish.</p><div class="price" data-egp="EGP 5,000" data-usd="$100">EGP 5,000</div>
+        <ul><li><b>9</b> campaign images</li><li>1 world, 1 look</li><li>Story versions of every image</li><li><b>2</b> ad creatives</li><li>A character from our cast</li><li>1 round of revisions</li></ul><a href="#apply">Book The Grid</a></div>
+      <div class="card hot"><span class="ribbon mono">Most booked</span><span class="label mono">Best value</span><h3>The Signature</h3><p class="for">Your own face, your own world, and every post finished. You just hit publish.</p><div class="price" data-egp="EGP 10,000" data-usd="$200">EGP 10,000</div>
+        <ul><li><b>12</b> campaign images, <b>all edited</b> into ready-to-post layouts</li><li><b>2</b> worlds, 2 looks</li><li><b>Exclusive character</b>, only for your brand</li><li>Edited story versions of every post</li><li><b>6</b> ad creatives</li><li><b>2</b> short motion teasers</li><li>2 rounds of revisions</li><li>Priority delivery</li></ul><a href="#apply">Claim The Signature</a></div>
+      <div class="card"><span class="label mono">The full launch</span><h3>Premium</h3><p class="for">Looks like a magazine. Moves like an ad. For launches that need noise.</p><div class="price" data-egp="EGP 20,000" data-usd="$400">EGP 20,000</div>
+        <ul><li><b>20</b> campaign images, 3 worlds, <b>all edited</b> and ready to post</li><li><b>Exclusive character</b></li><li><b>4</b> motion reels</li><li><b>10</b> brand templates you can reuse</li><li>Full edited story set</li><li><b>8</b> ad creatives</li><li>A launch posting plan</li></ul><a href="#apply">Book Premium</a></div>
+      <div class="card"><span class="label mono">Monthly</span><h3>Always On</h3><p class="for">You already shoot. You just have more products than photos. We fix that, every month.</p><div class="price" data-egp="EGP 30,000<small>/MO</small>" data-usd="$600<small>/MO</small>">EGP 30,000<small>/MO</small></div>
+        <ul><li><b>50+</b> creatives a month</li><li>Statics, motion reels and edited templates</li><li>Your full product line, rotated through fresh worlds</li><li>Exclusive character</li><li>Monthly content plan for daily posting</li></ul><a href="#apply">Go Always On</a></div>
+    </div>
+    <p class="fx">Prices are set in EGP. USD is shown at about 50 EGP per $1.</p>
+  </div>
+</section>
+
+<section id="shop">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="num mono">05 / Shop</span><h2>Learn to make <em class="s">this.</em></h2></div>
+      <p>For creators who'd rather make it than hire us. Respect. Here's the playbook.</p>
+    </div>
+    <div class="shop">
+      <div class="prod"><div class="cover cimg"><img src="assets/cov-cheat.webp" alt="" loading="lazy"></div>
+        <div class="body"><h3>Realism Cheat Sheet</h3><p>The tiny details that make AI stop looking like AI. Costs less than your morning coffee.</p><div class="row"><b><s>$10</s> <span>$1</span></b><a class="free" href="https://ig.me/m/unshot.visuals">Get it</a></div></div></div>
+      <div class="prod"><div class="cover cimg"><img src="assets/cov-pack.webp" alt="" loading="lazy"></div>
+        <div class="body"><h3>The Prompt Pack</h3><p>21 prompts we actually used, each with its real result and every setting. Copy, paste, look like you've been doing this for years.</p><div class="row"><b><s>$25</s> <span>$10</span></b><a href="https://ig.me/m/unshot.visuals">Get it</a></div></div></div>
+      <div class="prod"><div class="cover cimg"><img src="assets/cov-guide.webp" alt="" loading="lazy"></div>
+        <div class="body"><h3>Director's Guide</h3><p>50 face prompts, your own consistent model, the product pipeline and full campaigns. Basically our brain, in a PDF.</p><div class="row"><b><s>$70</s> <span>$39</span></b><a href="https://ig.me/m/unshot.visuals">Get it</a></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="apply" id="apply">
+  <div class="wrap">
+    <div class="side">
+      <span class="num mono" style="color:var(--cherry);display:block;margin-bottom:14px">06 / Claim a spot</span>
+      <h2>Your brand, <em class="s">unshot.</em></h2>
+      <p style="margin-top:22px;max-width:420px">Tell us everything. The more you give us, the harder we go. Full applications get their idea back first.</p>
+      <ul class="perks">
+        <li><b>01</b>A reply in 48 hours, not 48 days</li>
+        <li><b>02</b>See your idea before you pay in full</li>
+        <li><b>03</b>Only 4 new brands a month. Be one.</li>
+      </ul>
+    </div>
+    <form id="f" novalidate>
+      <div class="part"><span class="mono">A</span><b>About you</b></div>
+      <div class="fld"><label for="n">Your name *</label><input id="n" autocomplete="name"></div>
+      <div class="fld"><label for="ct">Email or WhatsApp *</label><input id="ct" placeholder="Where should we reply?"></div>
+      <div class="fld"><label for="b">Brand name *</label><input id="b"></div>
+      <div class="fld"><label for="ig">Instagram or website</label><input id="ig" placeholder="@yourbrand"></div>
+      <div class="fld full"><label for="cat">What do you sell?</label><select id="cat"><option>Fashion</option><option>Beauty / skincare</option><option>Jewelry / accessories</option><option>Bags / shoes</option><option>Food / drinks</option><option>Home / lifestyle</option><option>Other</option></select></div>
+      <div class="fld full"><label for="abt">Tell us about your brand</label><span class="hint">Who you are, who buys from you, and what you want people to feel when they see you.</span><textarea id="abt"></textarea></div>
+
+      <div class="part"><span class="mono">B</span><b>The campaign</b></div>
+      <div class="fld full"><label>What is this campaign for?</label><div class="chips" data-name="type">
+        <input type="checkbox" id="t1" value="New drop / collection"><label for="t1">New drop</label>
+        <input type="checkbox" id="t2" value="Product launch"><label for="t2">Product launch</label>
+        <input type="checkbox" id="t3" value="Seasonal / holiday"><label for="t3">Seasonal</label>
+        <input type="checkbox" id="t4" value="Sale / promo"><label for="t4">Sale or promo</label>
+        <input type="checkbox" id="t5" value="Ongoing content"><label for="t5">Ongoing content</label>
+        <input type="checkbox" id="t6" value="Rebrand"><label for="t6">Rebrand</label>
+        <input type="checkbox" id="t7" value="Other"><label for="t7">Other</label>
+      </div></div>
+      <div class="fld full"><label for="prod">The product(s)</label><span class="hint">What's the star? How many pieces, colors, materials, and what makes them special.</span><textarea id="prod"></textarea></div>
+      <div class="fld full"><label for="idea">The idea and the vibe</label><span class="hint">Mood, colors, dream locations, the story. And anything that makes you cringe, so we never do it.</span><textarea id="idea" style="min-height:110px"></textarea></div>
+      <div class="fld full"><label>The looks you want</label><span class="hint">Tap everything you loved in the work above. Pick as many as you like.</span><div class="chips" data-name="looks"><input type="checkbox" id="lk0" value="Just send the product"><label for="lk0">Just send the product</label><input type="checkbox" id="lk1" value="Camera Roll"><label for="lk1">Camera Roll</label><input type="checkbox" id="lk2" value="On Set"><label for="lk2">On Set</label><input type="checkbox" id="lk3" value="Editorial"><label for="lk3">Editorial</label><input type="checkbox" id="lk4" value="Impossible Worlds"><label for="lk4">Impossible Worlds</label><input type="checkbox" id="lk5" value="Product Worlds"><label for="lk5">Product Worlds</label><input type="checkbox" id="lk6" value="Flash Hour"><label for="lk6">Flash Hour</label><input type="checkbox" id="lk7" value="The Edit Room"><label for="lk7">The Edit Room</label></div></div>
+      <div class="fld full"><label>The face of the campaign</label><div class="chips" data-name="face">
+        <input type="radio" name="face" id="c1" value="Claire"><label for="c1">Claire</label>
+        <input type="radio" name="face" id="c2" value="Lara"><label for="c2">Lara</label>
+        <input type="radio" name="face" id="c3" value="Omar"><label for="c3">Omar</label>
+        <input type="radio" name="face" id="c4" value="Nour"><label for="c4">Nour</label>
+        <input type="radio" name="face" id="c5" value="Exclusive character for my brand"><label for="c5">Exclusive character</label>
+        <input type="radio" name="face" id="c6" value="Product only, no model"><label for="c6">Product only</label>
+        <input type="radio" name="face" id="c7" value="Not sure yet" checked><label for="c7">Not sure yet</label>
+      </div></div>
+      <div class="fld full"><label>Where will it live?</label><div class="chips" data-name="where">
+        <input type="checkbox" id="w1" value="Instagram feed"><label for="w1">Instagram feed</label>
+        <input type="checkbox" id="w2" value="Stories / Reels"><label for="w2">Stories and Reels</label>
+        <input type="checkbox" id="w3" value="Paid ads"><label for="w3">Paid ads</label>
+        <input type="checkbox" id="w4" value="Website"><label for="w4">Website</label>
+        <input type="checkbox" id="w5" value="TikTok"><label for="w5">TikTok</label>
+        <input type="checkbox" id="w6" value="Print / packaging"><label for="w6">Print</label>
+      </div></div>
+      <div class="fld"><label for="dl">Launch date or deadline</label><input id="dl" type="date"></div>
+      <div class="fld"><label for="pk">Package</label><select id="pk"><option>Test Shot</option><option>The Grid</option><option selected>The Signature</option><option>Premium</option><option>Always On (monthly)</option><option>Not sure, advise me</option></select></div>
+
+      <div class="part"><span class="mono">C</span><b>References</b></div>
+      <div class="fld full"><label for="refs">Moodboards and links</label><span class="hint">Pinterest boards, campaigns you wish were yours, accounts you stalk. Paste them all.</span><textarea id="refs" placeholder="https://pinterest.com/..."></textarea></div>
+      <div class="fld full"><label>Files</label><label class="drop" id="drop" for="files" style="text-transform:none;letter-spacing:0;font-family:var(--sans)"><input type="file" id="files" multiple accept="image/*,.pdf">Drop product photos, logo files or moodboards here, or <u>browse</u><div class="files" id="fnames"></div></label></div>
+      <p class="err" id="err">We need your name, a way to reach you and your brand name. Then we're good.</p>
+      <button type="submit">Send it →</button>
+      <div class="done" id="done">
+        <b>Nice. One step left.</b> Your application is copied. Paste it in a DM to <a href="https://ig.me/m/unshot.visuals">@unshot.visuals</a> on Instagram<span id="fnote"></span>, and we'll reply within 48 hours.
+        <pre id="out"></pre>
+        <div class="acts"><button type="button" id="copy">Copy again</button><a href="https://ig.me/m/unshot.visuals">Open Instagram DM →</a></div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="head"><div><span class="num mono">07 / FAQ</span><h2>Good <em class="s">questions.</em></h2></div></div>
+    <div class="faq">
+      <details><summary>What do I get with the Test Shot?</summary><p>3 campaign images, 3 story versions and 3 ad creatives, starring someone from our cast. Think of it as a first date. Book a package after, and the full amount comes off.</p></details>
+      <details><summary>Will it look like AI?</summary><p>That's kind of the whole point: it won't. Real light, real shadows, real skin, real fabric. If something looks off, we fix it before you ever see it.</p></details>
+      <details><summary>What is an exclusive character?</summary><p>A face built from scratch for your brand. You approve it, and it's never used for anyone else. It takes serious work, so it comes with The Signature, Premium and Always On.</p></details>
+      <details><summary>What do I need to send?</summary><p>Clear product photos, your logo, and anything that shows your taste. The form walks you through it. No homework, promise.</p></details>
+      <details><summary>Do I only get images?</summary><p>Nope. Depending on your package: story versions, ad creatives, motion reels, edited layouts and templates. It lands ready to post.</p></details>
+      <details><summary>How long does it take?</summary><p>Test Shot: 2 to 3 days. Bigger campaigns: about a week after you sign off on the idea. Still faster than booking a studio.</p></details>
+      <details><summary>Will my logo and label be exact?</summary><p>Yes. Logos and small text go in by hand, so your branding is always sharp. No melted letters here.</p></details>
+      <details><summary>How do I pay?</summary><p>50% to start, 50% on delivery. EGP or USD, same price.</p></details>
+    </div>
+  </div>
+</section>
+
+<div class="lb" id="lb" aria-hidden="true"><span class="x mono">Close ✕</span><img alt=""></div>
+<div class="toast" id="toast"><span id="toastT"></span><a href="#apply">Go to form →</a></div>
+
+<footer>
+  <div class="wrap">
+    <p class="pre">Spots this month are going. Your next campaign could be the one people screenshot.</p>
+    <a class="btn-ivory" href="#apply">Claim your spot →</a>
+    <div class="big" style="margin-top:60px">Unshot.</div>
+    <div class="row">
+      <div class="logo"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-label="UNSHOT VISUALS logo" viewBox="0 0 1080.0 1080.0"><defs><path id="g2A" d="M285 0L10 0L439-640L717-640L1150 0L875 0L812-97L347-97L285 0ZM444-247L715-247L579-457L444-247Z"/><path id="g2H" d="M960-419L960-640L1210-640L1210 0L960 0L960-229L320-229L320 0L70 0L70-640L320-640L320-419L960-419Z"/><path id="g2I" d="M85 0L85-640L335-640L335 0L85 0Z"/><path id="g2L" d="M70-640L320-640L320-190L903-190L903 0L70 0L70-640Z"/><path id="g2N" d="M320-640L980-251L980-640L1230-640L1230 0L980 0L320-382L320 0L70 0L70-640L320-640Z"/><path id="g2O" d="M665 20L665 20Q447 20 314-19Q181-57 121-133Q60-208 60-320L60-320Q60-432 121-508Q181-583 314-622Q447-660 665-660L665-660Q883-660 1016-622Q1149-583 1210-508Q1270-432 1270-320L1270-320Q1270-208 1210-133Q1149-57 1016-19Q883 20 665 20ZM665-170L665-170Q768-170 843-183Q918-195 959-228Q1000-260 1000-320L1000-320Q1000-380 959-413Q918-445 843-458Q768-470 665-470L665-470Q562-470 485-458Q407-445 364-413Q320-380 320-320L320-320Q320-260 364-228Q407-195 485-183Q562-170 665-170Z"/><path id="g2S" d="M35-235L35-235L308-235Q315-214 349-200Q383-185 441-178Q498-170 574-170L574-170Q649-170 693-175Q736-179 754-191Q772-202 772-222L772-222Q772-241 743-252Q714-262 640-266Q566-270 432-270L432-270Q332-270 260-280Q187-289 141-310Q94-330 72-362Q50-393 50-437L50-437Q50-513 102-563Q153-612 258-637Q362-661 519-661L519-661Q749-661 871-595Q992-528 992-403L992-403L733-403Q728-436 671-454Q614-471 509-471L509-471Q405-471 355-459Q304-447 304-418L304-418Q304-403 318-394Q332-385 367-380Q401-374 464-372Q527-370 624-370L624-370Q731-370 806-360Q881-349 928-328Q974-307 995-275Q1016-242 1016-198L1016-198Q1016-122 968-74Q920-26 816-3Q712 20 544 20L544 20Q449 20 370 9Q290-2 228-24Q166-45 123-77Q80-108 58-148Q35-187 35-235Z"/><path id="g2T" d="M30-450L30-640L1070-640L1070-450L675-450L675 0L425 0L425-450L30-450Z"/><path id="g2U" d="M969-365L969-365L969-640L1219-640L1219-320Q1219-235 1188-176Q1156-116 1100-78Q1044-39 971-18Q898 3 815 12Q731 20 645 20L645 20Q554 20 469 12Q384 3 312-18Q239-39 185-78Q131-116 101-176Q70-235 70-320L70-320L70-640L320-640L320-365Q320-285 359-243Q398-201 471-186Q543-170 645-170L645-170Q744-170 817-186Q890-201 930-243Q969-285 969-365Z"/><path id="g2V" d="M756 0L408 0L20-640L302-640L582-120L862-640L1140-640L756 0Z"/></defs><g transform="scale(9.81818)"><circle cx="55" cy="55" r="54" fill="#F2EEE7"/><circle cx="55" cy="55" r="51" fill="none" stroke="#B20E19" stroke-width="0.7"/><use href="#g2U" fill="#B20E19" transform="translate(55 55) rotate(-59.75) translate(-7.41 -38.00) scale(0.01150)"/><use href="#g2N" fill="#B20E19" transform="translate(55 55) rotate(-34.44) translate(-7.47 -38.00) scale(0.01150)"/><use href="#g2S" fill="#B20E19" transform="translate(55 55) rotate(-11.15) translate(-6.07 -38.00) scale(0.01150)"/><use href="#g2H" fill="#B20E19" transform="translate(55 55) rotate(11.97) translate(-7.36 -38.00) scale(0.01150)"/><use href="#g2O" fill="#B20E19" transform="translate(55 55) rotate(37.46) translate(-7.65 -38.00) scale(0.01150)"/><use href="#g2T" fill="#B20E19" transform="translate(55 55) rotate(61.39) translate(-6.33 -38.00) scale(0.01150)"/><use href="#g2V" fill="#B20E19" transform="translate(55 55) rotate(50.23) translate(-6.67 45.36) scale(0.01150)"/><use href="#g2I" fill="#B20E19" transform="translate(55 55) rotate(36.35) translate(-2.42 45.36) scale(0.01150)"/><use href="#g2S" fill="#B20E19" transform="translate(55 55) rotate(23.23) translate(-6.07 45.36) scale(0.01150)"/><use href="#g2U" fill="#B20E19" transform="translate(55 55) rotate(3.80) translate(-7.41 45.36) scale(0.01150)"/><use href="#g2A" fill="#B20E19" transform="translate(55 55) rotate(-16.39) translate(-6.67 45.36) scale(0.01150)"/><use href="#g2L" fill="#B20E19" transform="translate(55 55) rotate(-34.06) translate(-5.42 45.36) scale(0.01150)"/><use href="#g2S" fill="#B20E19" transform="translate(55 55) rotate(-50.98) translate(-6.07 45.36) scale(0.01150)"/><circle cx="13" cy="55" r="1.6" fill="#B20E19"/><circle cx="97" cy="55" r="1.6" fill="#B20E19"/><circle cx="55" cy="55" r="26" fill="#B20E19"/><circle cx="55" cy="55" r="19.5" fill="#A9BFD8"/><circle cx="55" cy="55" r="9.5" fill="#0C324A"/><path transform="translate(60.51 49.49) scale(0.470)" d="M0,-10 C1,-2 2,-1 10,0 C2,1 1,2 0,10 C-1,2 -2,1 -10,0 C-2,-1 -1,-2 0,-10Z" fill="#F2EEE7"/></g></svg></div>
+      <div class="fl mono">
+        <a href="https://instagram.com/unshot.visuals">Instagram · @unshot.visuals</a>
+        <a href="#packages">Packages</a>
+        <a href="#cast">Cast</a>
+        <a href="#shop">Shop</a>
+      </div>
+      <span class="mono" style="opacity:.8">© 2026 UNSHOT · Every image is AI</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // menu
+  var menu=document.getElementById('menu'),ob=document.getElementById('openMenu');
+  function setMenu(o){menu.classList.toggle('open',o);menu.setAttribute('aria-hidden',!o);ob.setAttribute('aria-expanded',o);document.body.classList.toggle('locked',o)}
+  ob.addEventListener('click',function(){setMenu(true)});
+  document.getElementById('closeMenu').addEventListener('click',function(){setMenu(false)});
+  menu.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(){setMenu(false)})});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false)});
+
+  // currency
+  var btns=document.querySelectorAll('.toggle button');
+  function setC(c){
+    btns.forEach(function(b){b.classList.toggle('on',b.dataset.c===c)});
+    document.querySelectorAll('[data-usd]').forEach(function(el){el.innerHTML=el.dataset[c]});
+    try{localStorage.setItem('unshot-cur',c)}catch(e){}
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){setC(b.dataset.c)})});
+  try{var s=localStorage.getItem('unshot-cur');if(s==='usd'||s==='egp')setC(s)}catch(e){}
+
+  // files
+  var fi=document.getElementById('files'),drop=document.getElementById('drop'),fn=document.getElementById('fnames'),picked=[];
+  function showFiles(list){picked=Array.prototype.map.call(list,function(f){return f.name});fn.textContent=picked.length?picked.length+' file(s): '+picked.join(', '):''}
+  fi.addEventListener('change',function(){showFiles(fi.files)});
+  ['dragenter','dragover'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add('over')})});
+  ['dragleave','drop'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove('over')})});
+  drop.addEventListener('drop',function(e){if(e.dataTransfer&&e.dataTransfer.files)showFiles(e.dataTransfer.files)});
+
+  // form
+  var f=document.getElementById('f'),txt='';
+  function v(id){var el=document.getElementById(id);return el?el.value.trim():''}
+  function checked(name){return Array.prototype.map.call(f.querySelectorAll('[data-name="'+name+'"] input:checked'),function(i){return i.value}).join(', ')}
+  function copy(){try{navigator.clipboard.writeText(txt).catch(function(){})}catch(e){}}
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var err=document.getElementById('err');
+    if(!v('n')||!v('ct')||!v('b')){err.style.display='block';document.getElementById(!v('n')?'n':!v('ct')?'ct':'b').focus();return}
+    err.style.display='none';
+    var L=[
+      'Hi UNSHOT! Here is my application.','',
+      '— ABOUT —','Name: '+v('n'),'Contact: '+v('ct'),'Brand: '+v('b'),'Instagram / website: '+(v('ig')||'-'),'Category: '+v('cat'),'About the brand: '+(v('abt')||'-'),'',
+      '— CAMPAIGN —','For: '+(checked('type')||'-'),'Product(s): '+(v('prod')||'-'),'Idea and vibe: '+(v('idea')||'-'),'Looks: '+(checked('looks')||'-'),'Face: '+(checked('face')||'-'),'Where it will live: '+(checked('where')||'-'),'Deadline: '+(v('dl')||'-'),'Package: '+v('pk'),'',
+      '— REFERENCES —','Links: '+(v('refs')||'-'),'Files: '+(picked.length?picked.join(', ')+' (sending next)':'-')
+    ];
+    txt=L.join('\n');
+    document.getElementById('out').textContent=txt;
+    document.getElementById('fnote').textContent=picked.length?', then send your '+picked.length+' file(s) in the same chat':'';
+    document.getElementById('done').style.display='block';
+    copy();
+  });
+  document.getElementById('copy').addEventListener('click',copy);
+  // rails
+  document.querySelectorAll('.cat,.cpane').forEach(function(b){
+    var r=b.querySelector('.rail');if(!r)return;
+    var st=function(d){r.scrollBy({left:d*r.clientWidth*.8,behavior:'smooth'})};
+    var p=b.querySelector('.prev'),n=b.querySelector('.next');
+    if(p)p.addEventListener('click',function(){st(-1)});if(n)n.addEventListener('click',function(){st(1)});
+  });
+  // lightbox
+  var lb=document.getElementById('lb'),lbi=lb.querySelector('img');
+  document.querySelectorAll('.shot img').forEach(function(im){im.addEventListener('click',function(){lbi.src=im.src;lb.classList.add('on')})});
+  lb.addEventListener('click',function(){lb.classList.remove('on')});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('on')});
+  // toast
+  var toast=document.getElementById('toast'),tt=document.getElementById('toastT'),tm;
+  function say(s){tt.textContent=s;toast.classList.add('on');clearTimeout(tm);tm=setTimeout(function(){toast.classList.remove('on')},3200)}
+  // want buttons
+  document.querySelectorAll('.want').forEach(function(b){b.addEventListener('click',function(){
+    var lk=b.dataset.look;f.querySelectorAll('[data-name="looks"] input').forEach(function(i){if(i.value===lk){i.checked=!i.checked;b.classList.toggle('added',i.checked);b.textContent=i.checked?'In your brief ✓':'Add to my brief →';say(i.checked?'Done. "'+lk+'" is in your brief.':'"'+lk+'" taken out of your brief.')}});
+  })});
+  f.querySelectorAll('[data-name="looks"] input').forEach(function(i){i.addEventListener('change',function(){document.querySelectorAll('.want').forEach(function(b){if(b.dataset.look===i.value){b.classList.toggle('added',i.checked);b.textContent=i.checked?'In your brief ✓':'Add to my brief →'}})})});
+  // cast tabs
+  document.querySelectorAll('.ctab').forEach(function(tb){tb.addEventListener('click',function(){
+    document.querySelectorAll('.ctab').forEach(function(x){x.classList.toggle('on',x===tb)});
+    document.querySelectorAll('.cpane').forEach(function(p){p.classList.toggle('on',p.dataset.c===tb.dataset.c)});
+  })});
+  document.querySelectorAll('.bookbtn').forEach(function(b){b.addEventListener('click',function(){
+    f.querySelectorAll('[data-name="face"] input').forEach(function(i){if(i.value===b.dataset.face)i.checked=true});
+    say(b.dataset.face.indexOf('Exclusive')===0?'Exclusive character added to your application.':b.dataset.face+' is booked on your application.');
+  })});
+
+})();
+</script>
+</body>
+</html>

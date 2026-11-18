@@ -393,7 +393,7 @@ input,select,textarea{max-width:100%;min-width:0}
 
 /* MOBILE HEADLINE SIZE (Syne is wide) */
 @media(max-width:600px){
-h1{font-size:min(46px,8vw);letter-spacing:-.04em;overflow-wrap:normal!important;word-break:keep-all}
+h1{font-size:min(46px,7.6vw);letter-spacing:-.04em;overflow-wrap:normal!important;word-break:keep-all}
 footer .big{font-size:min(56px,9vw)!important;letter-spacing:-.03em;line-height:1}
 .hero,.marquee,footer{overflow:hidden}
 h2{font-size:min(36px,8.4vw)}
@@ -430,6 +430,7 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
 .wmark .o:hover,footer .big.wm .o:hover{animation-duration:1.2s!important}
 @keyframes cdspin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.wmark .o,footer .big.wm .o{animation:none!important}}
+.price.quote{font-size:22px;letter-spacing:-.01em}.quotebtn{display:inline-block;padding:12px 20px;border-radius:99px;background:var(--cherry,#B20E19);color:#F2EEE7;text-decoration:none;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
 </style>
 </head>
 <body>
@@ -469,7 +470,7 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
   <div class="wrap">
     <div>
       <div class="kicker mono"><span class="dot"></span> AI campaign studio · 4 brand spots this month</div>
-      <h1>Campaigns you <em class="s">never</em> had to shoot.</h1>
+      <h1><span style="white-space:nowrap">Campaigns</span> you <em class="s">never</em> had to shoot.</h1>
       <p class="lede">Your product deserves better than a white backdrop and a ring light. We put it in worlds that don't exist, next to faces that don't exist, and it still looks more real than your last shoot.</p>
       <div class="ctas">
         <a class="btn-cherry" href="#apply">Claim your spot →</a>
@@ -615,24 +616,24 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
     <div class="head">
       <div><span class="num mono" style="color:var(--denim)">04 / Packages</span><h2>Choose your <em class="s">campaign.</em></h2></div>
       <div>
-        <p style="margin-bottom:16px">Same price, any currency. Pick your fighter.</p>
-        <div class="toggle" role="group" aria-label="Currency"><button class="on" data-c="egp">EGP</button><button data-c="usd">USD $</button></div>
+        <p style="margin-bottom:16px">Every brand is a different world, so every quote is built for yours.</p>
+        <a class="quotebtn mono" href="https://www.instagram.com/unshot.vs/" target="_blank" rel="noopener">Get your quote →</a>
       </div>
     </div>
     <div class="offer"><b>Founding brands: 30% off</b><span>First 3 brands only. After that, this banner disappears and so does the discount.</span><span class="left mono" aria-label="3 spots left"><i></i><i></i><i></i>&nbsp;3 left</span></div>
     <div class="cards">
-      <div class="card"><span class="label mono">Start here</span><h3>Test Shot</h3><p class="for">The easiest yes you'll say this month. See your product in our world before you go big.</p><div class="price" data-egp="EGP 1,500" data-usd="$30">EGP 1,500</div>
-        <ul><li><b>3</b> campaign images</li><li><b>3</b> story versions</li><li><b>3</b> ad creatives</li><li>A character from our cast</li><li>Credited toward any package</li></ul><a href="#apply">Book the Test Shot</a></div>
-      <div class="card"><span class="label mono">The essential</span><h3>The Grid</h3><p class="for">One big idea, done properly. A full campaign, start to finish.</p><div class="price" data-egp="EGP 5,000" data-usd="$100">EGP 5,000</div>
-        <ul><li><b>9</b> campaign images</li><li>1 world, 1 look</li><li>Story versions of every image</li><li><b>2</b> ad creatives</li><li>A character from our cast</li><li>1 round of revisions</li></ul><a href="#apply">Book The Grid</a></div>
-      <div class="card hot"><span class="ribbon mono">Most booked</span><span class="label mono">Best value</span><h3>The Signature</h3><p class="for">Your own face, your own world, and every post finished. You just hit publish.</p><div class="price" data-egp="EGP 10,000" data-usd="$200">EGP 10,000</div>
-        <ul><li><b>12</b> campaign images, <b>all edited</b> into ready-to-post layouts</li><li><b>2</b> worlds, 2 looks</li><li><b>Exclusive character</b>, only for your brand</li><li>Edited story versions of every post</li><li><b>6</b> ad creatives</li><li><b>2</b> short motion teasers</li><li>2 rounds of revisions</li><li>Priority delivery</li></ul><a href="#apply">Claim The Signature</a></div>
-      <div class="card"><span class="label mono">The full launch</span><h3>Premium</h3><p class="for">Looks like a magazine. Moves like an ad. For launches that need noise.</p><div class="price" data-egp="EGP 20,000" data-usd="$400">EGP 20,000</div>
-        <ul><li><b>20</b> campaign images, 3 worlds, <b>all edited</b> and ready to post</li><li><b>Exclusive character</b></li><li><b>4</b> motion reels</li><li><b>10</b> brand templates you can reuse</li><li>Full edited story set</li><li><b>8</b> ad creatives</li><li>A launch posting plan</li></ul><a href="#apply">Book Premium</a></div>
-      <div class="card"><span class="label mono">Monthly</span><h3>Always On</h3><p class="for">You already shoot. You just have more products than photos. We fix that, every month.</p><div class="price" data-egp="EGP 30,000<small>/MO</small>" data-usd="$600<small>/MO</small>">EGP 30,000<small>/MO</small></div>
-        <ul><li><b>50+</b> creatives a month</li><li>Statics, motion reels and edited templates</li><li>Your full product line, rotated through fresh worlds</li><li>Exclusive character</li><li>Monthly content plan for daily posting</li></ul><a href="#apply">Go Always On</a></div>
+      <div class="card"><span class="label mono">Start here</span><h3>Test Shot</h3><p class="for">The easiest yes you'll say this month. See your product in our world before you go big.</p><div class="price quote">Quote on request</div>
+        <ul><li><b>3</b> campaign images</li><li><b>3</b> story versions</li><li>A character from our cast</li><li>Credited toward any package</li></ul><a href="#apply">Book the Test Shot</a></div>
+      <div class="card"><span class="label mono">The essential</span><h3>The Grid</h3><p class="for">One big idea, done properly. A full campaign, start to finish.</p><div class="price quote">Quote on request</div>
+        <ul><li><b>9</b> campaign images, 4:5 and story size</li><li>1 world, 1 look</li><li><b>2</b> ad creatives</li><li>A character from our cast</li><li>1 round of revisions</li></ul><a href="#apply">Book The Grid</a></div>
+      <div class="card hot"><span class="ribbon mono">Most booked</span><span class="label mono">Best value</span><h3>The Signature</h3><p class="for">Your own face, your own world, and every post finished. You just hit publish.</p><div class="price quote">Quote on request</div>
+        <ul><li><b>12</b> campaign images, <b>all edited</b> into ready-to-post layouts</li><li><b>Exclusive character</b>, only for your brand</li><li>Edited story versions of every post</li><li><b>6</b> ad creatives</li><li><b>1</b> short motion teaser</li><li>2 rounds of revisions</li><li>Priority delivery</li></ul><a href="#apply">Claim The Signature</a></div>
+      <div class="card"><span class="label mono">The full launch</span><h3>Premium</h3><p class="for">Looks like a magazine. Moves like an ad. For launches that need noise.</p><div class="price quote">Quote on request</div>
+        <ul><li><b>20</b> campaign images, 3 worlds, <b>all edited</b> and ready to post</li><li><b>Exclusive character</b></li><li><b>2</b> motion reels</li><li>Story sizes of every post</li><li><b>8</b> ad creatives</li><li>A launch posting plan</li></ul><a href="#apply">Book Premium</a></div>
+      <div class="card"><span class="label mono">Monthly</span><h3>Always On</h3><p class="for">You already shoot. You just have more products than photos. We fix that, every month.</p><div class="price quote">Quote on request</div>
+        <ul><li><b>30+</b> creatives a month</li><li>Statics, motion reels and edited templates</li><li>Your full product line, rotated through fresh worlds</li><li>Exclusive character</li><li>Monthly content plan for daily posting</li></ul><a href="#apply">Go Always On</a></div>
     </div>
-    <p class="fx">Prices are set in EGP. USD is shown at about 50 EGP per $1.</p>
+    <p class="fx">Pricing depends on your brand, products and timeline. Apply below or DM us and we'll send your quote.</p>
   </div>
 </section>
 
@@ -732,7 +733,7 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
       <details><summary>Do I only get images?</summary><p>Nope. Depending on your package: story versions, ad creatives, motion reels, edited layouts and templates. It lands ready to post.</p></details>
       <details><summary>How long does it take?</summary><p>Test Shot: 2 to 3 days. Bigger campaigns: about a week after you sign off on the idea. Still faster than booking a studio.</p></details>
       <details><summary>Will my logo and label be exact?</summary><p>Yes. Logos and small text go in by hand, so your branding is always sharp. No melted letters here.</p></details>
-      <details><summary>How do I pay?</summary><p>50% to start, 50% on delivery. EGP or USD, same price.</p></details>
+      <details><summary>How do I pay?</summary><p>50% to start, 50% on delivery. EGP or USD.</p></details>
     </div>
   </div>
 </section>

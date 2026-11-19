@@ -714,9 +714,9 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
       <p class="err" id="err">We need your name, a way to reach you and your brand name. Then we're good.</p>
       <button type="submit">Send it →</button>
       <div class="done" id="done">
-        <b>Nice. One step left.</b> Your application is copied. Paste it in a DM to <a href="https://ig.me/m/unshot.visuals">@unshot.visuals</a> on Instagram<span id="fnote"></span>, and we'll reply within 48 hours.
+        <b>Nice. One step left.</b> Your application is copied. Paste it in a DM to <a href="https://ig.me/m/unshot.vs">UNSHOT on Instagram</a><span id="fnote"></span>, and we'll reply within 48 hours.
         <pre id="out"></pre>
-        <div class="acts"><button type="button" id="copy">Copy again</button><a href="https://ig.me/m/unshot.visuals">Open Instagram DM →</a></div>
+        <div class="acts"><button type="button" id="copy">Copy again</button><a href="https://ig.me/m/unshot.vs">Open Instagram DM →</a></div>
       </div>
     </form>
   </div>
@@ -792,6 +792,7 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
   function v(id){var el=document.getElementById(id);return el?el.value.trim():''}
   function checked(name){return Array.prototype.map.call(f.querySelectorAll('[data-name="'+name+'"] input:checked'),function(i){return i.value}).join(', ')}
   function copy(){try{navigator.clipboard.writeText(txt).catch(function(){})}catch(e){}}
+  var SHEET_URL='https://script.google.com/macros/s/AKfycbyh6BAjP3wyiIdRPkEZ9vOGk2Rn1N5zCWUFaNZQKuBDO7PmHhUj091ItI_KXwu1X3QSlQ/exec';
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var err=document.getElementById('err');
@@ -803,6 +804,7 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
       '— CAMPAIGN —','For: '+(checked('type')||'-'),'Product(s): '+(v('prod')||'-'),'Idea and vibe: '+(v('idea')||'-'),'Looks: '+(checked('looks')||'-'),'Face: '+(checked('face')||'-'),'Where it will live: '+(checked('where')||'-'),'Deadline: '+(v('dl')||'-'),'Package: '+v('pk'),'',
       '— REFERENCES —','Links: '+(v('refs')||'-'),'Files: '+(picked.length?picked.join(', ')+' (sending next)':'-')
     ];
+    try{if(SHEET_URL){var fd=new URLSearchParams({'Name':v('n'),'Contact':v('ct'),'Brand':v('b'),'Instagram / website':v('ig'),'Category':v('cat'),'About the brand':v('abt'),'For':checked('type'),'Product(s)':v('prod'),'Idea and vibe':v('idea'),'Looks':checked('looks'),'Face':checked('face'),'Where it will live':checked('where'),'Deadline':v('dl'),'Package':v('pk'),'Reference links':v('refs'),'Files':picked.join(', ')});fetch(SHEET_URL,{method:'POST',mode:'no-cors',body:fd})}}catch(x){}
     txt=L.join('\n');
     document.getElementById('out').textContent=txt;
     document.getElementById('fnote').textContent=picked.length?', then send your '+picked.length+' file(s) in the same chat':'';

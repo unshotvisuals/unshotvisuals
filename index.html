@@ -661,7 +661,7 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
       <h2>Your brand, <em class="s">unshot.</em></h2>
       <p style="margin-top:22px;max-width:420px">Tell us everything. The more you give us, the harder we go. Full applications get their idea back first.</p>
       <ul class="perks">
-        <li><b>01</b>A reply in 48 hours, not 48 days</li>
+        <li><b>01</b>A reply in 2–3 business days, not 2–3 months</li>
         <li><b>02</b>See your idea before you pay in full</li>
         <li><b>03</b>Only 4 new brands a month. Be one.</li>
       </ul>
@@ -671,7 +671,8 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
       <div class="fld"><label for="n">Your name *</label><input id="n" autocomplete="name"></div>
       <div class="fld"><label for="ct">Email or WhatsApp *</label><input id="ct" placeholder="Where should we reply?"></div>
       <div class="fld"><label for="b">Brand name *</label><input id="b"></div>
-      <div class="fld"><label for="ig">Instagram or website</label><input id="ig" placeholder="@yourbrand"></div>
+      <div class="fld"><label for="ig">Brand Instagram *</label><input id="ig" placeholder="@yourbrand" autocapitalize="off"></div>
+      <div class="fld"><label for="web">Website</label><input id="web" placeholder="yourbrand.com (optional)" autocapitalize="off"></div>
       <div class="fld full"><label for="cat">What do you sell?</label><select id="cat"><option>Fashion</option><option>Beauty / skincare</option><option>Jewelry / accessories</option><option>Bags / shoes</option><option>Food / drinks</option><option>Home / lifestyle</option><option>Other</option></select></div>
       <div class="fld full"><label for="abt">Tell us about your brand</label><span class="hint">Who you are, who buys from you, and what you want people to feel when they see you.</span><textarea id="abt"></textarea></div>
 
@@ -711,12 +712,12 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
       <div class="part"><span class="mono">C</span><b>References</b></div>
       <div class="fld full"><label for="refs">Moodboards and links</label><span class="hint">Pinterest boards, campaigns you wish were yours, accounts you stalk. Paste them all.</span><textarea id="refs" placeholder="https://pinterest.com/..."></textarea></div>
       <div class="fld full"><label>Files</label><label class="drop" id="drop" for="files" style="text-transform:none;letter-spacing:0;font-family:var(--sans)"><input type="file" id="files" multiple accept="image/*,.pdf">Drop product photos, logo files or moodboards here, or <u>browse</u><div class="files" id="fnames"></div></label></div>
-      <p class="err" id="err">We need your name, a way to reach you and your brand name. Then we're good.</p>
+      <p class="err" id="err">We need your name, a way to reach you, your brand name and its Instagram. Then we're good.</p>
       <button type="submit">Send it →</button>
       <div class="done" id="done">
-        <b>Nice. One step left.</b> Your application is copied. Paste it in a DM to <a href="https://ig.me/m/unshot.vs">UNSHOT on Instagram</a><span id="fnote"></span>, and we'll reply within 48 hours.
-        <pre id="out"></pre>
-        <div class="acts"><button type="button" id="copy">Copy again</button><a href="https://ig.me/m/unshot.vs">Open Instagram DM →</a></div>
+        <b style="display:block;font-size:22px;margin-bottom:8px">Application received 👁</b>
+        <span id="dmsg">Your brief is in. We'll review it and get back to you within 2–3 business days.</span>
+        <span id="fnote" style="display:block;margin-top:10px;opacity:.75;font-size:13px"></span>
       </div>
     </form>
   </div>
@@ -796,22 +797,22 @@ footer .big.wm{font-size:clamp(44px,8.5vw,130px)!important;justify-content:flex-
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var err=document.getElementById('err');
-    if(!v('n')||!v('ct')||!v('b')){err.style.display='block';document.getElementById(!v('n')?'n':!v('ct')?'ct':'b').focus();return}
+    if(!v('n')||!v('ct')||!v('b')||!v('ig')){err.style.display='block';document.getElementById(!v('n')?'n':!v('ct')?'ct':!v('b')?'b':'ig').focus();return}
+    var igh=v('ig').replace(/^https?:\/\/(www\.)?instagram\.com\//i,'').replace(/[\/?].*$/,'').replace(/^@*/,'@');
     err.style.display='none';
     var L=[
       'Hi UNSHOT! Here is my application.','',
-      '— ABOUT —','Name: '+v('n'),'Contact: '+v('ct'),'Brand: '+v('b'),'Instagram / website: '+(v('ig')||'-'),'Category: '+v('cat'),'About the brand: '+(v('abt')||'-'),'',
+      '— ABOUT —','Name: '+v('n'),'Contact: '+v('ct'),'Brand: '+v('b'),'Instagram: '+igh,'Website: '+(v('web')||'-'),'Category: '+v('cat'),'About the brand: '+(v('abt')||'-'),'',
       '— CAMPAIGN —','For: '+(checked('type')||'-'),'Product(s): '+(v('prod')||'-'),'Idea and vibe: '+(v('idea')||'-'),'Looks: '+(checked('looks')||'-'),'Face: '+(checked('face')||'-'),'Where it will live: '+(checked('where')||'-'),'Deadline: '+(v('dl')||'-'),'Package: '+v('pk'),'',
       '— REFERENCES —','Links: '+(v('refs')||'-'),'Files: '+(picked.length?picked.join(', ')+' (sending next)':'-')
     ];
-    try{if(SHEET_URL){var fd=new URLSearchParams({'Name':v('n'),'Contact':v('ct'),'Brand':v('b'),'Instagram / website':v('ig'),'Category':v('cat'),'About the brand':v('abt'),'For':checked('type'),'Product(s)':v('prod'),'Idea and vibe':v('idea'),'Looks':checked('looks'),'Face':checked('face'),'Where it will live':checked('where'),'Deadline':v('dl'),'Package':v('pk'),'Reference links':v('refs'),'Files':picked.join(', ')});fetch(SHEET_URL,{method:'POST',mode:'no-cors',body:fd})}}catch(x){}
+    try{if(SHEET_URL){var fd=new URLSearchParams({'Name':v('n'),'Contact':v('ct'),'Brand':v('b'),'Instagram / website':igh+(v('web')?'  ·  '+v('web'):''),'Category':v('cat'),'About the brand':v('abt'),'For':checked('type'),'Product(s)':v('prod'),'Idea and vibe':v('idea'),'Looks':checked('looks'),'Face':checked('face'),'Where it will live':checked('where'),'Deadline':v('dl'),'Package':v('pk'),'Reference links':v('refs'),'Files':picked.join(', ')});fetch(SHEET_URL,{method:'POST',mode:'no-cors',body:fd})}}catch(x){}
     txt=L.join('\n');
-    document.getElementById('out').textContent=txt;
-    document.getElementById('fnote').textContent=picked.length?', then send your '+picked.length+' file(s) in the same chat':'';
+    document.getElementById('dmsg').textContent='Thanks'+(v('n')?', '+v('n').split(' ')[0]:'')+'. Your brief for '+v('b')+' is in. We\'ll review it and get back to you within 2–3 business days.';
+    document.getElementById('fnote').textContent=picked.length?'Got files for us? Send them anytime on Instagram @unshot.vs.':'';
+    f.querySelector('button[type=submit]').style.display='none';
     document.getElementById('done').style.display='block';
-    copy();
   });
-  document.getElementById('copy').addEventListener('click',copy);
   // rails
   document.querySelectorAll('.cat,.cpane').forEach(function(b){
     var r=b.querySelector('.rail');if(!r)return;
